@@ -1,0 +1,63 @@
+<div class="col-12">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
+        <li class="breadcrumb-item"><a routerLink="/orgao">Listagem</a></li>
+        <li class="breadcrumb-item active">Bancos</li>
+      </ol>
+    </nav>
+    <div class="row mb-4">
+      <div class="col-md">
+        <h1 class="h3 border-left pl-2">
+          Cadastro dos Bancos
+        </h1>
+      </div>
+      <div class="col-md">
+        <button type="button" routerLink="/banco" class="btn btn-warning float-right">
+          <i class="fas fa-backward"></i>&nbsp;Voltar
+        </button>
+      </div>
+    </div>
+    <form class="needs-validation" novalidate [formGroup]="bancoForm">
+      <div class="card" style="box-shadow: 5px 5px 10px #000;">
+        <div class="card-header">
+          Formulário para Cadastro de Orgãos
+        </div>
+        <div class="card-body">
+          <div class="form-row col-md-12">
+            <div class="form-group col-md-1">
+              <label for="codigo">Código:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="codigo"
+                formControlName="id"
+              />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="descricao">Descrição:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="descricao"
+                formControlName="descricao"
+              />
+            </div>
+            <div class="form-group col-md-2">
+              <label for="obs">Status:</label>
+              <select class="form-control" id="status" name="status" formControlName="status">
+                <option value="" selected>Escolha uma opção</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div>
+      <button type="submit" class="btn btn-success float-right mt-2">
+      <i class="fas fa-save"></i> &nbsp;Salvar
+      </button>
+    </div>
+  </div>

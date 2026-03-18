@@ -1,0 +1,41 @@
+<div> {{ banco }} - {{ agencia }} - {{ conta }}</div>
+     <table class="table table-hover" style="font-size: 10pt;">
+        <thead>
+          <tr class="bg-success text-light">
+            <th>COD</th>
+            <th>DATA</th>
+            <th>LANÇAMENTO</th>
+            <th>RAZÃO SOCIAL</th>
+            <th>CRÉDITO</th>
+            <th>DÉBITO</th>
+            <th>SALDO</th>
+          </tr>
+        </thead>
+          <tbody>
+           @for(item of extratos; track item.id) {
+          <tr>
+            <td>
+              <strong>{{item.id}}</strong>
+            </td>
+            <td>
+                {{item.data}}
+            </td>
+            <td>
+                {{item.lancamento}}
+            </td>
+            <td>
+                {{ item.razaoSocial }}
+            </td>
+            <td>
+                {{ sharedService.formatarNumerosDecimais(item.credito) }}
+            </td>
+            <td>
+                {{ sharedService.formatarNumerosDecimais(item.debito) }}
+           </td>
+           <td>
+                {{ sharedService.formatarNumerosDecimais(item.saldo) }}
+           </td>
+          </tr>
+         }
+        </tbody>
+      </table>

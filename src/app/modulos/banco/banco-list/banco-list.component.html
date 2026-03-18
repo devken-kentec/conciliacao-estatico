@@ -1,0 +1,77 @@
+<div class="col-12">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
+        <li class="breadcrumb-item active">Listagem</li>
+      </ol>
+    </nav>
+    <div class="row mb-4">
+      <div class="col-md">
+        <h1 class="h3 border-left pl-2">
+          Bancos Cadastrados
+        </h1>
+      </div>
+      <div class="col-md">
+        <button type="button" routerLink="new" class="btn btn-success float-right">
+          <i class="fas fa-user-plus"></i> Cadastrar Banco
+        </button>
+      </div>
+    </div>
+     <div id="tbsd" class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr class="bg-success text-light">
+
+            <th>Codigo</th>
+            <th>Descrição</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+           @for(banco of bancos; track banco.id) {
+          <tr >
+            <td>
+              <strong>{{banco.id}}</strong>
+            </td>
+            <td>
+                {{banco.descricao}}
+            </td>
+            <td>
+                {{banco.status}}
+            </td>
+            <td>
+              <button class="btn btn-outline-info btn-sm"><i class="far fa-edit"></i></button>
+              <button  data-toggle="modal" data-target="#ModalExclusao" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ModalExclusao" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="TituloModalCentralizado">
+            Vamos lá!
+          </h5>
+        </div>
+        <div class="modal-body" style="font-weight: bold;">
+          Deseja excluir o registro de  ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            <i class="fas fa-window-close"></i>&nbsp;Fechar
+          </button>
+          <button class="btn btn-success" >
+              <i class="fas fa-save"></i> &nbsp;Excluir
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Fim da modal-->
+  </div>
