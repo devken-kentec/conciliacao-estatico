@@ -26,11 +26,11 @@
             <td>
                 {{ item.razaoSocial }}
             </td>
-            <td>
-                {{ sharedService.formatarNumerosDecimais(item.credito) }}
+            <td [ngStyle]="{'color': creditoLocalizado ? 'green' : 'red'}">
+                <span>{{ sharedService.formatarNumerosDecimais(item.credito) }}</span> <span>{{verificarCredito(item.credito, item.id)}}</span>
             </td>
-            <td>
-                {{ sharedService.formatarNumerosDecimais(item.debito) }}
+            <td [ngStyle]="{'color': debitoLocalizado ? 'green' : 'red'}">
+                <span>{{ sharedService.formatarNumerosDecimais(item.debito) }}</span> <span>{{verificarDebito(item.debito, item.id, item.data)}}</span>
            </td>
            <td>
                 {{ sharedService.formatarNumerosDecimais(item.saldo) }}
@@ -39,3 +39,24 @@
          }
         </tbody>
       </table>
+      <form class="needs-validation" novalidate [formGroup]="paginaForm" style="margin-top: 15px;">
+      <div class="row col-12 d-flex justify-content-center align-items-center" style="font-size: 10pt;">
+        <button type="button" data-toggle="tooltip" data-placement="top" title="Menor" class="btn btn-info" (click)="paginaMenor()">
+            <i class="fas fa-minus"></i> Anterior
+        </button>
+        <div class="form-group" style="margin-top: 15px; text-align: center; width: 120px;"><span>Pág. {{ pagina + 1}}  de {{ totalPages  }}</span></div>
+        <button type="button" data-toggle="tooltip" data-placement="top" title="Maior" class="btn btn-info" (click)="paginaMaior()">
+          <i class="fas fa-plus"></i> Próximo
+        </button>
+        <div class="form-group ml-1" style="margin-top: 15px; text-align: center; width: 65px;">
+          <select class="form-control" id="pegaTamanho" name="quantPag" formControlName="quantPag" (change)="atualizaPagina()">
+              <option value=50>50</option>
+              <option value=100>100</option>
+              <option value=250>250</option>
+              <option value=500>500</option>
+              <option value=1000>1000</option>
+          </select>
+        </div>
+      <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
+  </div>
+</form>
