@@ -11,4 +11,6 @@ export interface Extrato {
     banco: string;
     agencia: string;
     conta: string;
+    statusCredito: boolean;
+    statusDebito: boolean;
 }

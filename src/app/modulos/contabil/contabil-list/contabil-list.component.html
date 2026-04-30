@@ -4,15 +4,14 @@
           <tr class="bg-success text-light">
             <th>COD</th>
             <th>DATA</th>
-            <th>LANÇAMENTO</th>
-            <th>RAZÃO SOCIAL</th>
-            <th>CRÉDITO</th>
+            <th>CREDOR</th>
+            <th>MOVIMENTO</th>
             <th>DÉBITO</th>
-            <th>SALDO</th>
+            <th>CRÉDITO</th>
           </tr>
         </thead>
           <tbody>
-           @for(item of extratos; track item.id) {
+           @for(item of contabil; track item.id) {
           <tr>
             <td>
               <strong>{{item.id}}</strong>
@@ -21,19 +20,16 @@
                 {{item.data}}
             </td>
             <td>
-                {{item.lancamento}}
+                {{item.credor}}
             </td>
             <td>
-                {{ item.razaoSocial }}
-            </td>
-            <td [ngStyle]="{'color': item.statusCredito ? 'green' : 'red'}">
-                <span><a type="button" (click)="maisInformacoesCredito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a></span>
+                {{ item.movimento }}
             </td>
             <td [ngStyle]="{'color': item.statusDebito ? 'green' : 'red'}">
                 <span><a type="button" (click)="maisInformacoesDebito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a></span>
-           </td>
-           <td>
-                {{ sharedService.formatarNumerosDecimais(item.saldo) }}
+            </td>
+            <td [ngStyle]="{'color': item.statusCredito ? 'green' : 'red'}">
+                <span><a type="button" (click)="maisInformacoesCredito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a></span>
            </td>
           </tr>
          }
@@ -60,7 +56,7 @@
           <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
       </div>
       <div>
-        <button type="button" data-toggle="tooltip" data-placement="top" title="Veriicar" class="btn btn-primary" (click)="mostrarSemelhante()">
+        <button type="button" data-toggle="tooltip" data-placement="top" title="Verificar" class="btn btn-primary" (click)="mostrarSemelhante()">
               <i class="fas fa-plus"></i> Teste
         </button>
       </div>
@@ -78,7 +74,71 @@
                 </div>
                 <div class="modal-body">
                     <form [formGroup]="modalForm">
-                      @if(tituloModal === "Débito"){
+                      @if(tituloModal === "Crédito"){
+                         <div class="form-row col-md-12">
+                                <div class="form-group col-md-3">
+                                <label for="lancamento">Lançamento:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="lancamento"
+                                  formControlName = "id"
+                                  [readOnly]="true"
+                                />
+                              </div>
+                              <div class="form-group col-md-3">
+                                <label for="codigoCredito">Cód. Créd.:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="codigoCredito"
+                                  formControlName = "creditoId"
+                                />
+                              </div>
+                              <div class="form-group col-md-4">
+                                <label for="valorCredito">Valor Crédito:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="valorCredito"
+                                  formControlName = "credito"
+                                  [readOnly]="true"
+                                />
+                              </div>
+                            </div>
+                            <hr/>
+                            <div class="form-row col-md-12">
+                            <div class="form-group col-md-3">
+                              <label for="lancamento">Lançamento:</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="lancamento"
+                                formControlName = "id"
+                                [readOnly]="true"
+                              />
+                            </div>
+                            <div class="form-group col-md-3">
+                              <label for="codigoDebito">Cód. Déb.:</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="codigoDebito"
+                                formControlName = "debitoId"
+                              />
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label for="valorDebito">Valor Débito:</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="valorDebito"
+                                formControlName = "debito"
+                                [readOnly]="true"
+                              />
+                            </div>
+                          </div>
+                        } @else {
                             <div class="form-row col-md-12">
                             <div class="form-group col-md-3">
                               <label for="lancamento">Lançamento:</label>
@@ -138,70 +198,6 @@
                                 class="form-control"
                                 id="valorCredito"
                                 formControlName = "credito"
-                                [readOnly]="true"
-                              />
-                            </div>
-                          </div>
-                        } @else {
-                            <div class="form-row col-md-12">
-                                <div class="form-group col-md-3">
-                                <label for="lancamento">Lançamento:</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="lancamento"
-                                  formControlName = "id"
-                                  [readOnly]="true"
-                                />
-                              </div>
-                              <div class="form-group col-md-3">
-                                <label for="codigoCredito">Cód. Créd.:</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="codigoCredito"
-                                  formControlName = "creditoId"
-                                />
-                              </div>
-                              <div class="form-group col-md-4">
-                                <label for="valorCredito">Valor Crédito:</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="valorCredito"
-                                  formControlName = "credito"
-                                  [readOnly]="true"
-                                />
-                              </div>
-                            </div>
-                            <hr/>
-                            <div class="form-row col-md-12">
-                            <div class="form-group col-md-3">
-                              <label for="lancamento">Lançamento:</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="lancamento"
-                                formControlName = "id"
-                                [readOnly]="true"
-                              />
-                            </div>
-                            <div class="form-group col-md-3">
-                              <label for="codigoDebito">Cód. Déb.:</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="codigoDebito"
-                                formControlName = "debitoId"
-                              />
-                            </div>
-                            <div class="form-group col-md-4">
-                              <label for="valorDebito">Valor Débito:</label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="valorDebito"
-                                formControlName = "debito"
                                 [readOnly]="true"
                               />
                             </div>

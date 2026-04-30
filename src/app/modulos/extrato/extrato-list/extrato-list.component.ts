@@ -5,6 +5,7 @@ import { take, pipe } from 'rxjs';
 import { Extrato } from '../../../domain/extrato.domain';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgStyle } from '@angular/common';
+import { ExratoConciliado } from '../../../domain/extrato-conciliado';
 
 @Component({
   selector: 'app-extrato-list',
@@ -19,60 +20,93 @@ import { NgStyle } from '@angular/common';
 export class ExtratoListComponent {
 
     private extratoService = inject(ExtratoService);
+    private fb = inject(FormBuilder);
     public sharedService = inject(SharedService);
     public extratos: Extrato[] = [];
     public banco!: string;
     public agencia!: string;
     public conta!: string;
-    private fb = inject(FormBuilder);
-    public  paginaForm!: FormGroup;
+    public paginaForm!: FormGroup;
+    public modalForm!: FormGroup;
     public totalElements = 0;
     public totalPages = 0;
     public pagina = 0;
     public tamanho = 50;
     public debitoLocalizado: boolean = false;
     public creditoLocalizado: boolean = false;
+    public tituloModal: string = "";
+    public modalAbre: boolean = false;
 
-    ngOnInit(){
-      //this.listarTodos()
-         this.paginaForm = this.fb.group({
-          quantPag: [ 50 ]
-        });
+  ngOnInit(){
+    //this.listarTodos()
+      this.paginaForm = this.fb.group({
+        quantPag: [ 50 ]
+      });
 
-        this.totalListaExtrato();
-        this.listarExtratoPaginado(this.pagina, this.tamanho);
-    }
+      this.modalForm = this.fb.group({
+        id: [],
+        credito: [],
+        creditoId: [],
+        dataCred: [],
+        dataDeb: [],
+        debito: [],
+        debitoId: []
+      });
 
-    public totalListaExtrato(): void {
+      this.totalListaExtrato();
+      this.listarExtratoPaginado(this.pagina, this.tamanho);
+  }
+
+  public totalListaExtrato(): void {
       this.extratoService.fullList().pipe(take(1)).subscribe((res: number)=>{
       this.totalElements = res;
     });
   }
 
-  public verificarDebito(valor: number, id: number, data: string): void {
-    if(valor != 0){
-     //console.log(valor, id, "D")
-
-         this.extratoService.verificaDebito(valor, id, data).pipe(take(1)).subscribe((res:any)=>{
-        this.debitoLocalizado = true
+  public mostrarSemelhante(): void {
+    this.extratoService.mostrarSemelhante().pipe(take(1)).subscribe((res:any)=>{
         console.log(res)
      });
-    }
   }
 
-  public verificarCredito(valor: number, id: number): void {
-    if(valor != 0){
-      console.log(valor, id, "C")
-      this.creditoLocalizado= false;
-    }
-
+  public maisInformacoesDebito(item: Extrato): void{
+    this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
+        this.modalAbre = item.statusDebito;
+        console.log(this.modalAbre);
+        if(this.modalAbre){
+          this.tituloModal = "Débito";
+          this.modalForm.get("id")?.setValue(res.id);
+          this.modalForm.get("debitoId")?.setValue(res.debitoId);
+          this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+          this.modalForm.get("creditoId")?.setValue(res.creditoId);
+          this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        }
+    });
   }
 
+  public maisInformacoesCredito(item: Extrato): void{
+    this.extratoService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
+        this.modalAbre = item.statusCredito;
+        console.log(this.modalAbre);
+        if(this.modalAbre){
+          this.tituloModal = "Crédito";
+          this.modalForm.get("id")?.setValue(res.id);
+          this.modalForm.get("debitoId")?.setValue(res.debitoId);
+          this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+          this.modalForm.get("creditoId")?.setValue(res.creditoId);
+          this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        }
+    });
+  }
+
+  public limparModal(){
+    this.modalAbre = false;
+    this.modalForm.reset();
+  }
 
   public listarExtratoPaginado(page: number, size: number){
     this.extratoService.findAll(page, size).pipe(take(1)).subscribe((res: Extrato[])=>{
         this.extratos = res;
-        //console.log(res);
         this.banco = res[0].banco;
         this.agencia = res[0].agencia;
         this.conta = res[0].conta;
@@ -86,7 +120,7 @@ export class ExtratoListComponent {
     );
   }
 
-    public paginaMenor(): void {
+  public paginaMenor(): void {
     if(this.pagina <= 0){
       this.pagina = 0;
     } else {

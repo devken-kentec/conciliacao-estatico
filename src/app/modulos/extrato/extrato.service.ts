@@ -25,8 +25,16 @@ export class ExtratoService {
     return this.http.get<Extrato[]>(`${this.api}/listar?${params.toString()}`);
   }
 
-  public verificaDebito(valor: number, id: number, data: string): Observable<any> {
-    return this.http.get<any>(`${this.api}/verificaDebito/${valor}/${id}/${data}`);
+  public mostrarSemelhante(): Observable<any> {
+    return this.http.get<any>(`${this.api}/mostrarSemelhante`);
+  }
+
+  public mostrarDetalheDebito(extrato: Extrato): Observable<any> {
+    return this.http.get<any>(`${this.api}/mostrarDetalheDebito/${extrato.debito}/${extrato.id}`);
+  }
+
+  public mostrarDetalheCredito(extrato: Extrato): Observable<any> {
+    return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${extrato.credito}/${extrato.id}`);
   }
 
 }
