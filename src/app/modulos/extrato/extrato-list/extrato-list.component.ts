@@ -6,10 +6,12 @@ import { Extrato } from '../../../domain/extrato.domain';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgStyle } from '@angular/common';
 import { ExratoConciliado } from '../../../domain/extrato-conciliado';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-extrato-list',
   imports: [
+        RouterLink,
         ReactiveFormsModule,
         FormsModule,
         [NgStyle]
@@ -36,6 +38,12 @@ export class ExtratoListComponent {
     public creditoLocalizado: boolean = false;
     public tituloModal: string = "";
     public modalAbre: boolean = false;
+    public totalDebitoIgual: any = 0;
+    public totalCreditoIgual: any = 0;
+    public totalDebitoDif: any = 0;
+    public totalCreditoDif: any = 0;
+    public totalDebitoPagina: number = 0;
+    public totalCreditoPagina: number = 0;
 
   ngOnInit(){
     //this.listarTodos()
@@ -55,6 +63,8 @@ export class ExtratoListComponent {
 
       this.totalListaExtrato();
       this.listarExtratoPaginado(this.pagina, this.tamanho);
+      this.calculaTotalDebitoCreditoExtratoIgual();
+      this.calculaTotalDebitoCreditoExtratoDiferente();
   }
 
   public totalListaExtrato(): void {
@@ -106,6 +116,30 @@ export class ExtratoListComponent {
 
   public listarExtratoPaginado(page: number, size: number){
     this.extratoService.findAll(page, size).pipe(take(1)).subscribe((res: Extrato[])=>{
+        res.forEach(element => {
+            this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
+            this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
+         });
+        this.extratos = res;
+        this.banco = res[0].banco;
+        this.agencia = res[0].agencia;
+        this.conta = res[0].conta;
+        //this.carregando = true;
+        if(this.totalElements > this.paginaForm.get('quantPag')?.value){
+          this.totalPages = this.totalElements/this.paginaForm.get('quantPag')?.value;
+        } else {
+          this.totalPages = 1;
+        }
+      }
+    );
+  }
+
+  public listarExtratoPaginadoFiltro(id: number, dataInical: string, dataFinal: string, page: number, size: number){
+    this.extratoService.findAllFilter(id, dataInical, dataFinal, page, size).pipe(take(1)).subscribe((res: Extrato[])=>{
+        res.forEach(element => {
+            this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
+            this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
+         });
         this.extratos = res;
         this.banco = res[0].banco;
         this.agencia = res[0].agencia;
@@ -140,4 +174,20 @@ export class ExtratoListComponent {
     this.pagina = 0
     this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
   }
+
+  public calculaTotalDebitoCreditoExtratoIgual(): void {
+      this.extratoService.totalDebitoCreditoExtratoIguais().pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalCreditoIgual = res[0];
+        this.totalDebitoIgual = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoExtratoDiferente(): void {
+      this.extratoService.totalDebitoCreditoExtratoDiferente().pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalCreditoDif = res[0];
+        this.totalDebitoDif = res[1];
+      });
+    }
 }

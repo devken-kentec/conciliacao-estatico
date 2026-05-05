@@ -25,6 +25,15 @@ export class ExtratoService {
     return this.http.get<Extrato[]>(`${this.api}/listar?${params.toString()}`);
   }
 
+  public findAllFilter(id: number, dataInicial: string, dataFinal:string, page: number, size: number): Observable<Extrato[]> {
+    const params = new HttpParams().set('id', id)
+                                   .set('dataInicial', dataInicial)
+                                   .set('dataFinal', dataFinal)
+                                   .set('page', page)
+                                   .set('size', size);
+    return this.http.get<Extrato[]>(`${this.api}/listarFiltro?${params.toString()}`);
+  }
+
   public mostrarSemelhante(): Observable<any> {
     return this.http.get<any>(`${this.api}/mostrarSemelhante`);
   }
@@ -37,4 +46,11 @@ export class ExtratoService {
     return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${extrato.credito}/${extrato.id}`);
   }
 
+  public totalDebitoCreditoExtratoIguais(): Observable<any>{
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoIgual`)
+  }
+
+  public totalDebitoCreditoExtratoDiferente(): Observable<any>{
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoDiferente`)
+  }
 }

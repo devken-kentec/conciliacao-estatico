@@ -31,9 +31,17 @@ export class ContabilService {
 
   public mostrarDetalheDebito(contabil: Contabil): Observable<any> {
       return this.http.get<any>(`${this.api}/mostrarDetalheDebito/${contabil.debito}/${contabil.id}`);
-    }
+  }
 
-    public mostrarDetalheCredito(contabil: Contabil): Observable<any> {
-      return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${contabil.credito}/${contabil.id}`);
-    }
+  public mostrarDetalheCredito(contabil: Contabil): Observable<any> {
+    return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${contabil.credito}/${contabil.id}`);
+  }
+
+  public totalDebitoCreditoContabilIguais(): Observable<any>{
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilIgual`)
+  }
+
+  public totalDebitoCreditoContabilDiferente(): Observable<any>{
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilDiferente`)
+  }
 }

@@ -33,6 +33,12 @@ export class ContabilListComponent {
   public tamanho = 50;
   public tituloModal: string = "";
   public modalAbre: boolean = false;
+  public totalDebitoIgual: any = 0;
+  public totalCreditoIgual: any = 0;
+  public totalDebitoDif: any = 0;
+  public totalCreditoDif: any = 0;
+  public totalDebitoPagina: number = 0;
+  public totalCreditoPagina: number = 0;
 
   ngOnInit(){
     this.paginaForm = this.fb.group({
@@ -51,6 +57,8 @@ export class ContabilListComponent {
 
       this.totalListaContabil();
       this.listarContabilPaginado(this.pagina, this.tamanho);
+      this.calculaTotalDebitoCreditoContabilIgual();
+      this.calculaTotalDebitoCreditoContabilDiferente();
   }
 
   public totalListaContabil(): void {
@@ -71,12 +79,19 @@ export class ContabilListComponent {
   }
 
   public listarContabilPaginado(page: number, size: number){
+      this.totalDebitoPagina = 0;
+      this.totalCreditoPagina = 0;
       this.contabilService.findAll(page, size).pipe(take(1)).subscribe((res: Contabil[])=>{
-         console.log(res);
+         res.forEach(element => {
+            this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
+            this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
+         });
           this.contabil = res;
           this.banco = res[0].banco;
           this.agencia = res[0].agencia;
           this.conta = res[0].conta;
+          console.log(this.totalDebitoPagina);
+          console.log(this.totalCreditoPagina);
           //this.carregando = true;
           if(this.totalElements > this.paginaForm.get('quantPag')?.value){
             this.totalPages = this.totalElements/this.paginaForm.get('quantPag')?.value;
@@ -123,7 +138,7 @@ export class ContabilListComponent {
       });
     }
 
-    public maisInformacoesCredito(item: Contabil): void{
+    public maisInformacoesCredito(item: Contabil): void {
       this.contabilService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: any)=>{
           this.modalAbre = item.statusCredito;
           console.log(this.modalAbre);
@@ -135,6 +150,22 @@ export class ContabilListComponent {
             this.modalForm.get("creditoId")?.setValue(res.creditoId);
             this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
           }
+      });
+    }
+
+    public calculaTotalDebitoCreditoContabilIgual(): void {
+      this.contabilService.totalDebitoCreditoContabilIguais().pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoIgual = res[0];
+        this.totalCreditoIgual = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoContabilDiferente(): void {
+      this.contabilService.totalDebitoCreditoContabilDiferente().pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoDif = res[0];
+        this.totalCreditoDif = res[1];
       });
     }
 }

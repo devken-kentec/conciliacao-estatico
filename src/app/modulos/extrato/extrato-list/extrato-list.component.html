@@ -1,4 +1,38 @@
-<div> {{ banco }} - {{ agencia }} - {{ conta }}</div>
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
+    <li class="breadcrumb-item active">Extrato</li>
+  </ol>
+</nav>
+<div class="d-flex justify-content-center">
+  <h2>Extrato Bancário</h2>
+</div>
+<div class="mb-3" style="font-weight:bold">BANCO-AG/CC: {{ banco }}-{{ agencia }}/{{ conta }}</div>
+<div class="col-12 col-md-12">
+  <button type="button" data-toggle="tooltip" data-placement="top" title="Veriicar" style="margin-left: -15px;" class="btn btn-success mb-3" (click)="mostrarSemelhante()">
+        <i class="fas fa-plus"></i> Identificar Valores Iguais
+  </button>
+</div>
+<div class="col-12 col-md-12">
+  <div class="d-flex justify-content-end">
+    <span class="total">Total Crédito Iguais:&nbsp;</span>
+    <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</span>
+  </div>
+  <div class="d-flex justify-content-end">
+    <span class="total">Total Débito Iguais:&nbsp;</span>
+    <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</span>
+  </div>
+  <div class="d-flex justify-content-end">
+    <span class="total">Total Crédito Diferente:&nbsp;</span>
+    <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalCreditoDif) }}</span>
+  </div>
+  <div class="d-flex justify-content-end">
+    <span class="total">Total Débito Diferente:&nbsp;</span>
+    <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalDebitoDif) }}</span>
+  </div>
+  <br/>
+</div>
      <table class="table table-hover" style="font-size: 10pt;">
         <thead>
           <tr class="bg-success text-light">
@@ -6,9 +40,8 @@
             <th>DATA</th>
             <th>LANÇAMENTO</th>
             <th>RAZÃO SOCIAL</th>
-            <th>CRÉDITO</th>
-            <th>DÉBITO</th>
-            <th>SALDO</th>
+            <th style="text-align: end;">CRÉDITO</th>
+            <th style="text-align: end;">DÉBITO</th>
           </tr>
         </thead>
           <tbody>
@@ -26,19 +59,20 @@
             <td>
                 {{ item.razaoSocial }}
             </td>
-            <td [ngStyle]="{'color': item.statusCredito ? 'green' : 'red'}">
+            <td [ngStyle]="{'color': item.statusCredito ? 'green' : 'red'}" style="text-align: end;">
                 <span><a type="button" (click)="maisInformacoesCredito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a></span>
             </td>
-            <td [ngStyle]="{'color': item.statusDebito ? 'green' : 'red'}">
+            <td [ngStyle]="{'color': item.statusDebito ? 'green' : 'red'}" style="text-align: end;">
                 <span><a type="button" (click)="maisInformacoesDebito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a></span>
-           </td>
-           <td>
-                {{ sharedService.formatarNumerosDecimais(item.saldo) }}
            </td>
           </tr>
          }
         </tbody>
       </table>
+      <hr/>
+      <div class="col-12 col-md-12 d-flex justify-content-end" style="font-weight: bold;">
+        <span class="col-md-8" style="text-align: end;">Total por Página: </span><span class="col-md-2" style="text-align: end;">{{ sharedService.formatarNumerosDecimais(totalCreditoPagina) }}</span><span class="col-md-2" style="text-align: end;">{{ sharedService.formatarNumerosDecimais(totalDebitoPagina) }}</span>
+      </div>
       <form class="needs-validation" novalidate [formGroup]="paginaForm" style="margin-top: 15px;">
           <div class="row col-12 d-flex justify-content-center align-items-center" style="font-size: 10pt;">
             <button type="button" data-toggle="tooltip" data-placement="top" title="Menor" class="btn btn-info" (click)="paginaMenor()">
@@ -55,14 +89,10 @@
                   <option value=250>250</option>
                   <option value=500>500</option>
                   <option value=1000>1000</option>
+                  <option value=1500>1500</option>
               </select>
             </div>
           <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
-      </div>
-      <div>
-        <button type="button" data-toggle="tooltip" data-placement="top" title="Veriicar" class="btn btn-primary" (click)="mostrarSemelhante()">
-              <i class="fas fa-plus"></i> Teste
-        </button>
       </div>
     </form>
     @if(modalAbre){
@@ -211,7 +241,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="limparModal()">Fechar</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-success">Alterar Conciliação</button>
                 </div>
               </div>
             </div>
