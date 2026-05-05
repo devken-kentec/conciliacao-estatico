@@ -1,8 +1,7 @@
 import { SharedService } from './../../../shared/shared.service';
-import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BancoService } from '../../banco/banco.service';
 import { take } from 'rxjs';
 import { Banco } from '../../../domain/banco.domain';
@@ -24,7 +23,6 @@ export class FiltroFormComponent {
   private bancoService = inject(BancoService);
   private sharedService = inject(SharedService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
   public filtroForm!: FormGroup;
   public bancos: Banco[] = [];
