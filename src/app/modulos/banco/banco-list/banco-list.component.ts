@@ -22,7 +22,6 @@ export class BancoListComponent {
     this.listarBancos();
   }
 
-
   public listarBancos(){
     this.bancoService.findAll().pipe(take(1)).subscribe((res:Banco[])=>{
       this.bancos = res;

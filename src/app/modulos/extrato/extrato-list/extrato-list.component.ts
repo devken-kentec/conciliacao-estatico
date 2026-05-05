@@ -6,7 +6,7 @@ import { Extrato } from '../../../domain/extrato.domain';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgStyle } from '@angular/common';
 import { ExratoConciliado } from '../../../domain/extrato-conciliado';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-extrato-list',
@@ -24,6 +24,7 @@ export class ExtratoListComponent {
     private extratoService = inject(ExtratoService);
     private fb = inject(FormBuilder);
     public sharedService = inject(SharedService);
+    private route = inject(ActivatedRoute);
     public extratos: Extrato[] = [];
     public banco!: string;
     public agencia!: string;
@@ -44,9 +45,21 @@ export class ExtratoListComponent {
     public totalCreditoDif: any = 0;
     public totalDebitoPagina: number = 0;
     public totalCreditoPagina: number = 0;
+    public idAgencia!: number;
+    public dataInicial!: string;
+    public dataFinal!: string;
 
   ngOnInit(){
-    //this.listarTodos()
+    const routeParans = this.route.snapshot.params;
+    if(routeParans["idAgencia"] !== "" && routeParans["idAgencia"] > 0 && routeParans["idAgencia"] !== undefined){
+      this.idAgencia = routeParans["idAgencia"];
+      this.dataInicial = routeParans["dataInicial"];
+      this.dataFinal = routeParans["dataFinal"];
+      this.totalListaExtrato();
+      this.calculaTotalDebitoCreditoExtratoIgual();
+      this.calculaTotalDebitoCreditoExtratoDiferente();
+      this.listarExtratoPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.tamanho);
+    }
       this.paginaForm = this.fb.group({
         quantPag: [ 50 ]
       });
@@ -60,15 +73,10 @@ export class ExtratoListComponent {
         debito: [],
         debitoId: []
       });
-
-      this.totalListaExtrato();
-      this.listarExtratoPaginado(this.pagina, this.tamanho);
-      this.calculaTotalDebitoCreditoExtratoIgual();
-      this.calculaTotalDebitoCreditoExtratoDiferente();
   }
 
   public totalListaExtrato(): void {
-      this.extratoService.fullList().pipe(take(1)).subscribe((res: number)=>{
+      this.extratoService.fullList(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: number)=>{
       this.totalElements = res;
     });
   }
@@ -160,23 +168,26 @@ export class ExtratoListComponent {
     } else {
       this.pagina = this.pagina - 1;
     }
-    this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+    //this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+    this.listarExtratoPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.paginaForm.get('quantPag')?.value);
   }
 
   public paginaMaior(): void {
     if(this.totalPages > 1){
       this.pagina = this.pagina + 1;
-      this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+      //this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+      this.listarExtratoPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.paginaForm.get('quantPag')?.value);
     }
   }
 
   public atualizaPagina(): void {
     this.pagina = 0
-    this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+    //this.listarExtratoPaginado(this.pagina, this.paginaForm.get('quantPag')?.value);
+    this.listarExtratoPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.paginaForm.get('quantPag')?.value);
   }
 
   public calculaTotalDebitoCreditoExtratoIgual(): void {
-      this.extratoService.totalDebitoCreditoExtratoIguais().pipe(take(1)).subscribe((res: any)=>{
+      this.extratoService.totalDebitoCreditoExtratoIguais(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
         //console.log(res);
         this.totalCreditoIgual = res[0];
         this.totalDebitoIgual = res[1];
@@ -184,7 +195,7 @@ export class ExtratoListComponent {
     }
 
     public calculaTotalDebitoCreditoExtratoDiferente(): void {
-      this.extratoService.totalDebitoCreditoExtratoDiferente().pipe(take(1)).subscribe((res: any)=>{
+      this.extratoService.totalDebitoCreditoExtratoDiferente(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
         //console.log(res);
         this.totalCreditoDif = res[0];
         this.totalDebitoDif = res[1];

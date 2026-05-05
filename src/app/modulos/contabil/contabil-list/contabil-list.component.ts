@@ -5,10 +5,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { SharedService } from '../../../shared/shared.service';
 import { Contabil } from '../../../domain/contabil.domain';
 import { take } from 'rxjs';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-contabil-list',
   imports: [
+    RouterLink,
     ReactiveFormsModule,
     FormsModule,
     [NgStyle]
@@ -21,6 +23,7 @@ export class ContabilListComponent {
   private contabilService =inject(ContabilService);
   private fb = inject(FormBuilder);
   public sharedService = inject(SharedService);
+  private route = inject(ActivatedRoute);
   public contabil: Contabil[] = [];
   public banco!: string;
   public agencia!: string;
@@ -39,8 +42,21 @@ export class ContabilListComponent {
   public totalCreditoDif: any = 0;
   public totalDebitoPagina: number = 0;
   public totalCreditoPagina: number = 0;
+  public idAgencia!: number;
+  public dataInicial!: string;
+  public dataFinal!: string;
 
   ngOnInit(){
+    const routeParans = this.route.snapshot.params;
+    if(routeParans["idAgencia"] !== "" && routeParans["idAgencia"] > 0 && routeParans["idAgencia"] !== undefined){
+      this.idAgencia = routeParans["idAgencia"];
+      this.dataInicial = routeParans["dataInicial"];
+      this.dataFinal = routeParans["dataFinal"];
+      this.totalListaContabil();
+      this.calculaTotalDebitoCreditoContabilIgual();
+      this.calculaTotalDebitoCreditoContabilDiferente();
+      this.listarContabilPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.tamanho);
+    }
     this.paginaForm = this.fb.group({
         quantPag: [ 50 ]
       });
@@ -54,15 +70,10 @@ export class ContabilListComponent {
         debito: [],
         debitoId: []
       });
-
-      this.totalListaContabil();
-      this.listarContabilPaginado(this.pagina, this.tamanho);
-      this.calculaTotalDebitoCreditoContabilIgual();
-      this.calculaTotalDebitoCreditoContabilDiferente();
   }
 
   public totalListaContabil(): void {
-      this.contabilService.fullList().pipe(take(1)).subscribe((res: number)=>{
+      this.contabilService.fullList(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: number)=>{
       this.totalElements = res;
     });
   }
@@ -82,6 +93,30 @@ export class ContabilListComponent {
       this.totalDebitoPagina = 0;
       this.totalCreditoPagina = 0;
       this.contabilService.findAll(page, size).pipe(take(1)).subscribe((res: Contabil[])=>{
+         res.forEach(element => {
+            this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
+            this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
+         });
+          this.contabil = res;
+          this.banco = res[0].banco;
+          this.agencia = res[0].agencia;
+          this.conta = res[0].conta;
+          console.log(this.totalDebitoPagina);
+          console.log(this.totalCreditoPagina);
+          //this.carregando = true;
+          if(this.totalElements > this.paginaForm.get('quantPag')?.value){
+            this.totalPages = this.totalElements/this.paginaForm.get('quantPag')?.value;
+          } else {
+            this.totalPages = 1;
+          }
+        }
+      );
+    }
+
+      public listarContabilPaginadoFiltro(id: number, dataInical: string, dataFinal: string, page: number, size: number){
+      this.totalDebitoPagina = 0;
+      this.totalCreditoPagina = 0;
+      this.contabilService.findAllFilter(id, dataInical, dataFinal, page, size).pipe(take(1)).subscribe((res: Contabil[])=>{
          res.forEach(element => {
             this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
             this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
@@ -154,7 +189,7 @@ export class ContabilListComponent {
     }
 
     public calculaTotalDebitoCreditoContabilIgual(): void {
-      this.contabilService.totalDebitoCreditoContabilIguais().pipe(take(1)).subscribe((res: any)=>{
+      this.contabilService.totalDebitoCreditoContabilIguais(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
         //console.log(res);
         this.totalDebitoIgual = res[0];
         this.totalCreditoIgual = res[1];
@@ -162,7 +197,7 @@ export class ContabilListComponent {
     }
 
     public calculaTotalDebitoCreditoContabilDiferente(): void {
-      this.contabilService.totalDebitoCreditoContabilDiferente().pipe(take(1)).subscribe((res: any)=>{
+      this.contabilService.totalDebitoCreditoContabilDiferente(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
         //console.log(res);
         this.totalDebitoDif = res[0];
         this.totalCreditoDif = res[1];

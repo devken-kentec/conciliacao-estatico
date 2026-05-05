@@ -14,14 +14,20 @@
 
             <div class="form-group col-md-3">
               <label for="banco">Banco:</label>
-              <select class="form-control" id="banco" formControlName="banco">
+              <select class="form-control" id="banco" formControlName="banco" (change)="selectAgenciaConta()">
                 <option value=""></option>
+                @for(banco of bancos; track banco.id) {
+                  <option [ngValue]="banco.id" >{{banco.descricao}}</option>
+                }
               </select>
             </div>
             <div class="form-group col-md-3">
               <label for="agenciaConta">Agência/Conta:</label>
               <select class="form-control" id="agenciaConta" formControlName="agenciaConta">
-                <option>
+                <option value=""></option>
+                @for(agencia of agencias; track agencia.id) {
+                  <option [ngValue]="agencia.id" >{{agencia.agencia}} - {{agencia.conta}}</option>
+                }
               </select>
             </div>
             <div class="form-group col-md-2">
@@ -44,13 +50,20 @@
             </div>
             <div class="form-group col-md-2">
               <label for="tipo">Tipo:</label>
-              <select id="dataFinal" class="form-control" formControlName="dataFinal" >
+              <select id="dataFinal" class="form-control" formControlName="tipo" >
                 <option value="" selected></option>
-                <option>Extrato</option>
-                <option>Contábil</option>
+                <option value="extrato">Extrato</option>
+                <option value="contábil">Contábil</option>
               </select>
             </div>
           </div>
+              <div class="col-12 col-md-12">
+                  <button type="submit" class="btn btn-success float-right mt-2" (click)="onSubmit()">
+                    <i class="fa-solid fa-check"></i> &nbsp;Abrir
+                  </button>
+              </div>
         </div>
       </div>
+      <div>
+    </div>
     </form>

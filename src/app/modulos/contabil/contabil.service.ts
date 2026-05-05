@@ -16,14 +16,26 @@ export class ContabilService {
 
   constructor() { }
 
-  public fullList(): Observable<number> {
-      return this.http.get<number>(`${this.api}/totalLista`);
+  public fullList(id: number, dataInicial: string, dataFinal:string): Observable<number> {
+      const params = new HttpParams().set('id', id)
+                                   .set('dataInicial', dataInicial)
+                                   .set('dataFinal', dataFinal)
+      return this.http.get<number>(`${this.api}/totalLista?${params.toString()}`);
   }
 
   public findAll(page: number, size: number): Observable<Contabil[]> {
     const params = new HttpParams().set('page', page).set('size', size);
     return this.http.get<Contabil[]>(`${this.api}/listar?${params.toString()}`);
   }
+
+  public findAllFilter(id: number, dataInicial: string, dataFinal:string, page: number, size: number): Observable<Contabil[]> {
+      const params = new HttpParams().set('id', id)
+                                     .set('dataInicial', dataInicial)
+                                     .set('dataFinal', dataFinal)
+                                     .set('page', page)
+                                     .set('size', size);
+      return this.http.get<Contabil[]>(`${this.api}/listarFiltro?${params.toString()}`);
+    }
 
   public mostrarSemelhante(): Observable<any> {
     return this.http.get<any>(`${this.api}/mostrarSemelhante`);
@@ -37,11 +49,17 @@ export class ContabilService {
     return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${contabil.credito}/${contabil.id}`);
   }
 
-  public totalDebitoCreditoContabilIguais(): Observable<any>{
-    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilIgual`)
+  public totalDebitoCreditoContabilIguais(id: number, dataInicial: string, dataFinal:string): Observable<any>{
+    const params = new HttpParams().set('id', id)
+                                    .set('dataInicial', dataInicial)
+                                    .set('dataFinal', dataFinal)
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilIgual?${params.toString()}`)
   }
 
-  public totalDebitoCreditoContabilDiferente(): Observable<any>{
-    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilDiferente`)
+  public totalDebitoCreditoContabilDiferente(id: number, dataInicial: string, dataFinal: string): Observable<any>{
+    const params = new HttpParams().set('id', id)
+                                    .set('dataInicial', dataInicial)
+                                    .set('dataFinal', dataFinal)
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilDiferente?${params.toString()}`)
   }
 }

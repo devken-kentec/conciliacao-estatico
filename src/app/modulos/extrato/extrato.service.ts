@@ -16,8 +16,11 @@ export class ExtratoService {
 
   constructor() { }
 
-  public fullList(): Observable<number> {
-    return this.http.get<number>(`${this.api}/totalLista`);
+  public fullList(id: number, dataInicial: string, dataFinal:string): Observable<number> {
+    const params = new HttpParams().set('id', id)
+                                   .set('dataInicial', dataInicial)
+                                   .set('dataFinal', dataFinal)
+    return this.http.get<number>(`${this.api}/totalLista?${params.toString()}`);
   }
 
   public findAll(page: number, size: number): Observable<Extrato[]> {
@@ -46,11 +49,17 @@ export class ExtratoService {
     return this.http.get<any>(`${this.api}/mostrarDetalheCredito/${extrato.credito}/${extrato.id}`);
   }
 
-  public totalDebitoCreditoExtratoIguais(): Observable<any>{
-    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoIgual`)
+  public totalDebitoCreditoExtratoIguais(id: number, dataInicial: string, dataFinal:string): Observable<any>{
+     const params = new HttpParams().set('id', id)
+                                    .set('dataInicial', dataInicial)
+                                    .set('dataFinal', dataFinal)
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoIgual?${params.toString()}`)
   }
 
-  public totalDebitoCreditoExtratoDiferente(): Observable<any>{
-    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoDiferente`)
+  public totalDebitoCreditoExtratoDiferente(id: number, dataInicial: string, dataFinal:string): Observable<any>{
+    const params = new HttpParams().set('id', id)
+                                    .set('dataInicial', dataInicial)
+                                    .set('dataFinal', dataFinal)
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoDiferente?${params.toString()}`)
   }
 }
