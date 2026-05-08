@@ -39,8 +39,8 @@
             <th>DATA</th>
             <th>CREDOR</th>
             <th>MOVIMENTO</th>
-            <th style="text-align: end;">DÉBITO</th>
             <th style="text-align: end;">CRÉDITO</th>
+            <th style="text-align: end;">DÉBITO</th>
           </tr>
         </thead>
           <tbody>
@@ -58,12 +58,12 @@
             <td>
                 {{ item.movimento }}
             </td>
-            <td [ngStyle]="{'color': item.statusDebito ? 'green' : 'red'}" style="text-align: end;">
-                <span><a type="button" (click)="maisInformacoesDebito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a></span>
-            </td>
             <td [ngStyle]="{'color': item.statusCredito ? 'green' : 'red'}" style="text-align: end;">
                 <span><a type="button" (click)="maisInformacoesCredito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a></span>
            </td>
+           <td [ngStyle]="{'color': item.statusDebito ? 'green' : 'red'}" style="text-align: end;">
+                <span><a type="button" (click)="maisInformacoesDebito(item)" data-toggle="modal" data-target="#exampleModal">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a></span>
+            </td>
           </tr>
          }
         </tbody>
