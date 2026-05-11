@@ -11,8 +11,10 @@ export interface Contabil {
     movimento: string;
     fonteDetalhada: string;
     debito: number;
-    statusDebito: boolean;
     credito: number;
+    statusDebito: boolean;
     statusCredito: boolean;
+    statusDebitoConciliado: boolean;
+    statusCreditoConciliado: boolean;
     saldo: number;
 }

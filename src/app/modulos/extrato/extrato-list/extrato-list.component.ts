@@ -48,6 +48,8 @@ export class ExtratoListComponent {
     public idAgencia!: number;
     public dataInicial!: string;
     public dataFinal!: string;
+    public totalDebitoConciliado: any = 0;
+    public totalCreditoConciliado: any = 0;
 
   ngOnInit(){
     const routeParans = this.route.snapshot.params;
@@ -59,6 +61,7 @@ export class ExtratoListComponent {
       this.calculaTotalDebitoCreditoExtratoIgual();
       this.calculaTotalDebitoCreditoExtratoDiferente();
       this.listarExtratoPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.tamanho);
+      this.calculaTotalDebitoCreditoExtratoConciliado();
     }
       this.paginaForm = this.fb.group({
         quantPag: [ 50 ]
@@ -89,7 +92,7 @@ export class ExtratoListComponent {
 
   public maisInformacoesDebito(item: Extrato): void{
     this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
-        this.modalAbre = item.statusDebito;
+        //this.modalAbre = item.statusDebito;
         console.log(this.modalAbre);
         if(this.modalAbre){
           this.tituloModal = "Débito";
@@ -115,6 +118,14 @@ export class ExtratoListComponent {
           this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
         }
     });
+  }
+
+  public maisInformacoesConciliacaoCredito(item: Extrato): void {
+    console.log("Aqui e o ", item);
+  }
+
+  public maisInformacoesConciliacaoDebito(item: Extrato): void {
+    console.log("Aqui e o ", item);
   }
 
   public limparModal(){
@@ -144,6 +155,7 @@ export class ExtratoListComponent {
 
   public listarExtratoPaginadoFiltro(id: number, dataInical: string, dataFinal: string, page: number, size: number){
     this.extratoService.findAllFilter(id, dataInical, dataFinal, page, size).pipe(take(1)).subscribe((res: Extrato[])=>{
+      //console.log(res);
         res.forEach(element => {
             this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
             this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
@@ -199,6 +211,14 @@ export class ExtratoListComponent {
         //console.log(res);
         this.totalCreditoDif = res[0];
         this.totalDebitoDif = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoExtratoConciliado(): void {
+      this.extratoService.totalDebitoCreditoExtratoConciliado(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalCreditoConciliado = res[0];
+        this.totalDebitoConciliado = res[1];
       });
     }
 }

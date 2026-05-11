@@ -13,4 +13,6 @@ export interface Extrato {
     conta: string;
     statusCredito: boolean;
     statusDebito: boolean;
+    statusCreditoConciliado: boolean;
+    statusDebitoConciliado: boolean;
 }

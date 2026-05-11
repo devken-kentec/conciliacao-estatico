@@ -62,4 +62,11 @@ export class ContabilService {
                                     .set('dataFinal', dataFinal)
     return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilDiferente?${params.toString()}`)
   }
+
+  public totalDebitoCreditoContabilConciliado(id: number, dataInicial: string, dataFinal: string): Observable<any>{
+    const params = new HttpParams().set('id', id)
+                                    .set('dataInicial', dataInicial)
+                                    .set('dataFinal', dataFinal)
+    return this.http.get<any>(`${this.api}/totalDebitoCreditoContabilConciliado?${params.toString()}`)
+  }
 }

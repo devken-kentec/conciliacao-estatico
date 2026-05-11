@@ -45,6 +45,8 @@ export class ContabilListComponent {
   public idAgencia!: number;
   public dataInicial!: string;
   public dataFinal!: string;
+  public totalDebitoConciliado: any = 0;
+  public totalCreditoConciliado: any = 0;
 
   ngOnInit(){
     const routeParans = this.route.snapshot.params;
@@ -56,6 +58,7 @@ export class ContabilListComponent {
       this.calculaTotalDebitoCreditoContabilIgual();
       this.calculaTotalDebitoCreditoContabilDiferente();
       this.listarContabilPaginadoFiltro(this.idAgencia, this.dataInicial, this.dataFinal, this.pagina, this.tamanho);
+      this.calculaTotalDebitoCreditoContabilConciliado();
     }
     this.paginaForm = this.fb.group({
         quantPag: [ 50 ]
@@ -80,7 +83,7 @@ export class ContabilListComponent {
 
   public mostrarSemelhante(): void {
     this.contabilService.mostrarSemelhante().pipe(take(1)).subscribe((res:any)=>{
-        console.log(res)
+        //console.log(res)
      });
   }
 
@@ -101,8 +104,8 @@ export class ContabilListComponent {
           this.banco = res[0].banco;
           this.agencia = res[0].agencia;
           this.conta = res[0].conta;
-          console.log(this.totalDebitoPagina);
-          console.log(this.totalCreditoPagina);
+          //console.log(this.totalDebitoPagina);
+          //console.log(this.totalCreditoPagina);
           //this.carregando = true;
           if(this.totalElements > this.paginaForm.get('quantPag')?.value){
             this.totalPages = this.totalElements/this.paginaForm.get('quantPag')?.value;
@@ -117,7 +120,8 @@ export class ContabilListComponent {
       this.totalDebitoPagina = 0;
       this.totalCreditoPagina = 0;
       this.contabilService.findAllFilter(id, dataInical, dataFinal, page, size).pipe(take(1)).subscribe((res: Contabil[])=>{
-         res.forEach(element => {
+        console.log(res);
+        res.forEach(element => {
             this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
             this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
          });
@@ -125,8 +129,8 @@ export class ContabilListComponent {
           this.banco = res[0].banco;
           this.agencia = res[0].agencia;
           this.conta = res[0].conta;
-          console.log(this.totalDebitoPagina);
-          console.log(this.totalCreditoPagina);
+          //console.log(this.totalDebitoPagina);
+          //console.log(this.totalCreditoPagina);
           //this.carregando = true;
           if(this.totalElements > this.paginaForm.get('quantPag')?.value){
             this.totalPages = this.totalElements/this.paginaForm.get('quantPag')?.value;
@@ -161,7 +165,7 @@ export class ContabilListComponent {
   public maisInformacoesDebito(item: Contabil): void{
       this.contabilService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: any)=>{
           this.modalAbre = item.statusDebito;
-          console.log(this.modalAbre);
+          //console.log(this.modalAbre);
           if(this.modalAbre){
             this.tituloModal = "Débito";
             this.modalForm.get("id")?.setValue(res.id);
@@ -176,7 +180,7 @@ export class ContabilListComponent {
     public maisInformacoesCredito(item: Contabil): void {
       this.contabilService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: any)=>{
           this.modalAbre = item.statusCredito;
-          console.log(this.modalAbre);
+          //console.log(this.modalAbre);
           if(this.modalAbre){
             this.tituloModal = "Crédito";
             this.modalForm.get("id")?.setValue(res.id);
@@ -201,6 +205,14 @@ export class ContabilListComponent {
         //console.log(res);
         this.totalDebitoDif = res[0];
         this.totalCreditoDif = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoContabilConciliado(): void {
+      this.contabilService.totalDebitoCreditoContabilConciliado(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoConciliado = res[0];
+        this.totalCreditoConciliado = res[1];
       });
     }
 }
