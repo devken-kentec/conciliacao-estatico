@@ -69,4 +69,8 @@ export class ExtratoService {
                                     .set('dataFinal', dataFinal)
     return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoConciliado?${params.toString()}`)
   }
+
+  // public conciliarCreditoExtratoContabiilidade() Observable<> {
+
+  // }
 }

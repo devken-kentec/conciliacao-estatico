@@ -16,7 +16,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
     [NgStyle]
   ],
   templateUrl: './contabil-list.component.html',
-  styleUrl: './contabil-list.component.css'
+  styleUrl: './contabil-list.component.css',
+  preserveWhitespaces: true
 })
 export class ContabilListComponent {
 

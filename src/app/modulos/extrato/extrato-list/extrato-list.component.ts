@@ -92,7 +92,7 @@ export class ExtratoListComponent {
 
   public maisInformacoesDebito(item: Extrato): void{
     this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
-        //this.modalAbre = item.statusDebito;
+        this.modalAbre = item.statusDebito;
         console.log(this.modalAbre);
         if(this.modalAbre){
           this.tituloModal = "Débito";

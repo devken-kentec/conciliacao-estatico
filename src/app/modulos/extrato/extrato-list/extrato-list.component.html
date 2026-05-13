@@ -11,18 +11,34 @@
   BANCO-AG/CC: {{ banco }}-{{ agencia }}/{{ conta }}
 </div>
 <div class="col-12 col-md-12">
-  <button
-    type="button"
-    data-toggle="tooltip"
-    data-placement="top"
-    title="Veriicar"
-    style="margin-left: -15px"
-    class="btn btn-success mb-3"
-    (click)="mostrarSemelhante()"
-  >
-    <i class="fas fa-plus"></i> Identificar Valores Iguais
+  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-primary mb-3" (click)="mostrarSemelhante()">
+        <i class="fas fa-arrow-circle-down text-success"></i> Encontrar Idênticos no Extrato
+  </button>
+  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-secondary mb-3 ml-1" (click)="mostrarSemelhante()">
+        <i class="fas fa-exchange-alt text-success"></i>&nbsp;&nbsp;Conciliar Créditos com SIT
+  </button>
+  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-info mb-3 ml-1" (click)="mostrarSemelhante()">
+        <i class="fas fa-exchange-alt text-primary"></i>&nbsp;&nbsp;Conciliar Débitos com SIT
+  </button>
+  <button class="btn btn-primary ml-1"
+          type="button" data-toggle="collapse"
+          data-target="#multiCollapseExample2"
+          aria-expanded="false"
+          aria-controls="multiCollapseExample2"
+          style="margin-top: -16px;">
+          Legandas
   </button>
 </div>
+  <div class="col mb-3 d-flex justify-content-center">
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body p-5">
+        <span class="row"><i style="margin-top: 5px;" class="fas fa-arrow-circle-down text-success"></i>&nbsp;<span>Valores iguais de Crêdito e Dêbito dentro da Extrato</span></span>
+        <span class="row"><i style="margin-top: 5px;" class="fas fa-check mudaCheck"></i>&nbsp;Valores conciliados com a movimentação do SIT</span>
+        <span class="row"><i style="margin-top: 5px;" class="fas fa-exchange-alt text-success"></i>&nbsp; Excutar Conciliação com o SIT</span>
+        <span class="row"><span class="text-danger">R$ XX.XXX,XX</span> &nbsp; Valor sem corresponde entre Crédito e Débito no Extrato</span>
+      </div>
+    </div>
+  </div>
 <div class="col-12 col-md-12 row" style="font-size: 10pt;">
   <div class="col-12 col-md-4">
     <div class="d-flex justify-content-end">
@@ -66,9 +82,9 @@
       }}</span>
     </div>
   </div>
-
-  <br />
+  <br/>
 </div>
+<br>
 <table class="table table-hover" style="font-size: 10pt">
   <thead>
     <tr class="bg-success text-light">
@@ -105,8 +121,10 @@
               (click)="maisInformacoesCredito(item)"
               data-toggle="modal"
               data-target="#exampleModal"
-              >{{ sharedService.formatarNumerosDecimais(item.credito) }}</a
-            >
+              >
+              @if(item.statusCredito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}
+            </a>
+            {{ sharedService.formatarNumerosDecimais(item.credito) }}
             @if (item.statusCreditoConciliado) {
               <a
                 type="button"
@@ -122,14 +140,14 @@
           [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
           style="text-align: end"
         >
-          <span>
+          <span >
             <a
               type="button"
               (click)="maisInformacoesDebito(item)"
               data-toggle="modal"
               data-target="#exampleModal"
-              >{{ sharedService.formatarNumerosDecimais(item.debito) }}</a
-            >
+              > @if(item.statusDebito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}</a>
+              {{ sharedService.formatarNumerosDecimais(item.debito) }}
             @if (item.statusDebitoConciliado) {
               <a
                 type="button"

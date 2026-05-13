@@ -5,41 +5,51 @@
   </ol>
 </nav>
 <div class="d-flex justify-content-center">
-  <h2>Movimento Contabilidade</h2>
+  <h2>Movimento SIT</h2>
 </div>
 <div class="mb-3" style="font-weight:bold">BANCO/AG/CC:  {{ banco }}-{{ agencia }}/{{ conta }}</div>
 <div class="col-12 col-md-12">
-  <button type="button" data-toggle="tooltip" data-placement="top" title="Veriicar" style="margin-left: -15px;" class="btn btn-success mb-3" (click)="mostrarSemelhante()">
-        <i class="fas fa-plus"></i> Identificar Valores Iguais
+  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-primary mb-3" (click)="mostrarSemelhante()">
+        <i class="fas fa-arrow-circle-down"></i> Encontrar Idênticos
+  </button>
+  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-secondary mb-3 ml-1" (click)="mostrarSemelhante()">
+        <i class="fas fa-arrow-circle-down"></i> Encontrar Idênticos
   </button>
 </div>
-<div class="col-12 col-md-12">
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Crédito Iguais:&nbsp;</span>
-    <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</span>
+<div class="col-12 col-md-12 row" style="font-size: 10pt;">
+    <div class="col-12 col-md-4">
+      <div class="d-flex justify-content-end">
+      <span class="total">Total Crédito Iguais:&nbsp;</span>
+      <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</span>
+    </div>
+    <div class="d-flex justify-content-end">
+      <span class="total">Total Débito Iguais:&nbsp;</span>
+      <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</span>
+    </div>
   </div>
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Débito Iguais:&nbsp;</span>
-    <span class="text-success">{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</span>
+  <div class="col-12 col-md-4">
+    <div class="d-flex justify-content-end">
+      <span class="total">Total Crédito Diferente:&nbsp;</span>
+      <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalCreditoDif) }}</span>
+    </div>
+    <div class="d-flex justify-content-end">
+      <span class="total">Total Débito Diferente:&nbsp;</span>
+      <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalDebitoDif) }}</span>
+    </div>
   </div>
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Crédito Diferente:&nbsp;</span>
-    <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalCreditoDif) }}</span>
-  </div>
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Débito Diferente:&nbsp;</span>
-    <span class="text-danger">{{ sharedService.formatarNumerosDecimais(totalDebitoDif) }}</span>
-  </div>
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Crédito Conciliado:&nbsp;</span>
-    <span class="text-primary">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliado) }}</span>
-  </div>
-  <div class="d-flex justify-content-end">
-    <span class="total">Total Débito Conciliado:&nbsp;</span>
-    <span class="text-primary">{{ sharedService.formatarNumerosDecimais(totalDebitoConciliado) }}</span>
+  <div class="col-12 col-md-4">
+    <div class="d-flex justify-content-end">
+      <span class="total">Total Crédito Conciliado:&nbsp;</span>
+      <span class="text-primary">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliado) }}</span>
+    </div>
+    <div class="d-flex justify-content-end">
+      <span class="total">Total Débito Conciliado:&nbsp;</span>
+      <span class="text-primary">{{ sharedService.formatarNumerosDecimais(totalDebitoConciliado) }}</span>
+    </div>
   </div>
   <br/>
 </div>
+<br>
      <table class="table table-hover" style="font-size: 10pt;">
         <thead>
           <tr class="bg-success text-light">
