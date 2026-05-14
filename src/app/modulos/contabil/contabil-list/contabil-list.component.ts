@@ -36,7 +36,6 @@ export class ContabilListComponent {
   public pagina = 0;
   public tamanho = 50;
   public tituloModal: string = "";
-  public modalAbre: boolean = false;
   public totalDebitoIgual: any = 0;
   public totalCreditoIgual: any = 0;
   public totalDebitoDif: any = 0;
@@ -89,7 +88,6 @@ export class ContabilListComponent {
   }
 
   public limparModal(){
-    this.modalAbre = false;
     this.modalForm.reset();
   }
 
@@ -165,31 +163,23 @@ export class ContabilListComponent {
 
   public maisInformacoesDebito(item: Contabil): void{
       this.contabilService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: any)=>{
-          this.modalAbre = item.statusDebito;
-          //console.log(this.modalAbre);
-          if(this.modalAbre){
             this.tituloModal = "Débito";
             this.modalForm.get("id")?.setValue(res.id);
             this.modalForm.get("debitoId")?.setValue(res.debitoId);
             this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
             this.modalForm.get("creditoId")?.setValue(res.creditoId);
             this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-          }
       });
     }
 
     public maisInformacoesCredito(item: Contabil): void {
       this.contabilService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: any)=>{
-          this.modalAbre = item.statusCredito;
-          //console.log(this.modalAbre);
-          if(this.modalAbre){
             this.tituloModal = "Crédito";
             this.modalForm.get("id")?.setValue(res.id);
             this.modalForm.get("debitoId")?.setValue(res.debitoId);
             this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
             this.modalForm.get("creditoId")?.setValue(res.creditoId);
             this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-          }
       });
     }
 

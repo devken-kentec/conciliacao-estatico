@@ -1,4 +1,5 @@
-<nav>
+<div class="container">
+  <nav>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
     <li class="breadcrumb-item active">Extrato</li>
@@ -124,16 +125,18 @@
               >
               @if(item.statusCredito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}
             </a>
-            {{ sharedService.formatarNumerosDecimais(item.credito) }}
-            @if (item.statusCreditoConciliado) {
+            <a type="button" (click)="adicionarCreditos(item)">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a>
+              @if (item.statusCreditoConciliado) {
               <a
                 type="button"
                 (click)="maisInformacoesConciliacaoCredito(item)"
                 style="font-size: 14pt; font-weight: bold; color: black"
+                data-toggle="modal"
+                data-target="#exampleModal2"
               >
                 &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
               </a>
-            }
+              }
           </span>
         </td>
         <td
@@ -148,15 +151,17 @@
               data-target="#exampleModal"
               > @if(item.statusDebito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}</a>
               {{ sharedService.formatarNumerosDecimais(item.debito) }}
-            @if (item.statusDebitoConciliado) {
-              <a
-                type="button"
-                (click)="maisInformacoesConciliacaoDebito(item)"
-                style="font-size: 14pt; font-weight: bold; color: black"
-              >
-                &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
-              </a>
-            }
+                @if (item.statusDebitoConciliado) {
+                  <a
+                    type="button"
+                    (click)="maisInformacoesConciliacaoDebito(item)"
+                    style="font-size: 14pt; font-weight: bold; color: black"
+                    data-toggle="modal"
+                    data-target="#exampleModal2"
+                  >
+                    &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                  </a>
+                }
           </span>
         </td>
       </tr>
@@ -234,179 +239,331 @@
     <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
   </div>
 </form>
-@if (modalAbre) {
-  <div>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Dados do {{ tituloModal }}
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              (click)="limparModal()"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form [formGroup]="modalForm">
-              @if (tituloModal === "Débito") {
-                <div class="form-row col-md-12">
-                  <div class="form-group col-md-3">
-                    <label for="lancamento">Lançamento:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lancamento"
-                      formControlName="id"
-                      [readOnly]="true"
-                    />
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="codigoDebito">Cód. Déb.:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="codigoDebito"
-                      formControlName="debitoId"
-                    />
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="valorDebito">Valor Débito:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="valorDebito"
-                      formControlName="debito"
-                      [readOnly]="true"
-                    />
-                  </div>
+<!-- Modal dos Valores Equivalentes dentro do Extrato -->
+<div>
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Dados do {{ tituloModal }}
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="limparModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="modalForm">
+            @if (tituloModal === "Débito") {
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamento">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamento"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
                 </div>
-                <hr />
-                <div class="form-row col-md-12">
-                  <div class="form-group col-md-3">
-                    <label for="lancamento">Lançamento:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lancamento"
-                      formControlName="id"
-                      [readOnly]="true"
-                    />
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="codigoCredito">Cód. Créd.:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="codigoCredito"
-                      formControlName="creditoId"
-                    />
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="valorCredito">Valor Crédito:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="valorCredito"
-                      formControlName="credito"
-                      [readOnly]="true"
-                    />
-                  </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoDebito">Cód. Déb.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoDebito"
+                    formControlName="debitoId"
+                  />
                 </div>
-              } @else {
-                <div class="form-row col-md-12">
-                  <div class="form-group col-md-3">
-                    <label for="lancamento">Lançamento:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lancamento"
-                      formControlName="id"
-                      [readOnly]="true"
-                    />
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="codigoCredito">Cód. Créd.:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="codigoCredito"
-                      formControlName="creditoId"
-                    />
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="valorCredito">Valor Crédito:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="valorCredito"
-                      formControlName="credito"
-                      [readOnly]="true"
-                    />
-                  </div>
+                <div class="form-group col-md-4">
+                  <label for="valorDebito">Valor Débito:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorDebito"
+                    formControlName="debito"
+                    [readOnly]="true"
+                  />
                 </div>
-                <hr />
-                <div class="form-row col-md-12">
-                  <div class="form-group col-md-3">
-                    <label for="lancamento">Lançamento:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lancamento"
-                      formControlName="id"
-                      [readOnly]="true"
-                    />
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="codigoDebito">Cód. Déb.:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="codigoDebito"
-                      formControlName="debitoId"
-                    />
-                  </div>
-                  <div class="form-group col-md-4">
-                    <label for="valorDebito">Valor Débito:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="valorDebito"
-                      formControlName="debito"
-                      [readOnly]="true"
-                    />
-                  </div>
+              </div>
+              <hr />
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamento">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamento"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
                 </div>
-              }
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-              (click)="limparModal()"
-            >
-              Fechar
-            </button>
-            <button type="button" class="btn btn-success">
-              Alterar Conciliação
-            </button>
-          </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoCredito">Cód. Créd.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoCredito"
+                    formControlName="creditoId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCredito">Valor Crédito:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCredito"
+                    formControlName="credito"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+            } @else {
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamento1">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamento1"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoCredito">Cód. Créd.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoCredito"
+                    formControlName="creditoId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCredito">Valor Crédito:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCredito"
+                    formControlName="credito"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamento2">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamento2"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoDebito">Cód. Déb.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoDebito"
+                    formControlName="debitoId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorDebito">Valor Débito:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorDebito"
+                    formControlName="debito"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+            }
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="limparModal()"
+          >
+            Fechar
+          </button>
+          <button type="button" class="btn btn-success">
+            Alterar Conciliação
+          </button>
         </div>
       </div>
     </div>
   </div>
-}
+</div>
+<div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Conciliação Créditos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="modalForm2">
+            @if (tituloModal === "Crédito") {
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamentoc">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamentoc"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoDebitoc">Créd. Ext.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoDebitoc"
+                    formControlName="creditoExtratoId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCreditoc">Valor Créd. Ext.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCreditoc"
+                    formControlName="creditoExtrato"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamentoc2">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamentoc2"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoCreditosit">Créd. Sit.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoCreditosir"
+                    formControlName="creditoContabilId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCreditodit">Valor Crédito Sit.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCreditosit"
+                    formControlName="creditoContabil"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+            } @else {
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamentoc">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamentoc"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoDebitoc">Créd. Ext.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoDebitoc"
+                    formControlName="debitoExtratoId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCreditoc">Valor Créd. Ext.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCreditoc"
+                    formControlName="debitoExtrato"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+              <hr />
+              <div class="form-row col-md-12">
+                <div class="form-group col-md-3">
+                  <label for="lancamentoc2">Lançamento:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lancamentoc2"
+                    formControlName="id"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="codigoCreditosit">Créd. Sit.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigoCreditosir"
+                    formControlName="debitoContabilId"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="valorCreditodit">Valor Crédito Sit.:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorCreditosit"
+                    formControlName="debitoContabil"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+            }
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

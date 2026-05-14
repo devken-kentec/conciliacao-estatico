@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Extrato } from '../../domain/extrato.domain';
+import { Extrato, ExtratoConciliado } from '../../domain/extrato.domain';
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +70,11 @@ export class ExtratoService {
     return this.http.get<any>(`${this.api}/totalDebitoCreditoExtratoConciliado?${params.toString()}`)
   }
 
-  // public conciliarCreditoExtratoContabiilidade() Observable<> {
+  public conciliarCreditoExtratoContabilidade(id: number): Observable<ExtratoConciliado> {
+    return this.http.get<ExtratoConciliado>(`${this.api}/localizarCreditoExtrato/${id}`);
+  }
 
-  // }
+  public conciliarDebitoExtratoContabilidade(id: number): Observable<ExtratoConciliado> {
+    return this.http.get<ExtratoConciliado>(`${this.api}/localizarDebitoExtrato/${id}`);
+  }
 }

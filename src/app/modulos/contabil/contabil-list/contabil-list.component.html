@@ -1,4 +1,5 @@
-<nav>
+<div class="container">
+  <nav>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
     <li class="breadcrumb-item active">Contábil</li>
@@ -111,7 +112,6 @@
           <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
       </div>
     </form>
-    @if(modalAbre){
         <div>
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -263,4 +263,4 @@
             </div>
           </div>
         </div>
-    }
+</div>

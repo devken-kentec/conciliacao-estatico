@@ -1,11 +1,10 @@
 import { SharedService } from './../../../shared/shared.service';
 import { Component, inject } from '@angular/core';
 import { ExtratoService } from '../extrato.service';
-import { take, pipe } from 'rxjs';
-import { Extrato } from '../../../domain/extrato.domain';
+import { take } from 'rxjs';
+import { ExtratoEquivalente, Extrato, ExtratoConciliado } from '../../../domain/extrato.domain';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgStyle } from '@angular/common';
-import { ExratoConciliado } from '../../../domain/extrato-conciliado';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
@@ -20,7 +19,6 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   styleUrl: './extrato-list.component.css'
 })
 export class ExtratoListComponent {
-
     private extratoService = inject(ExtratoService);
     private fb = inject(FormBuilder);
     public sharedService = inject(SharedService);
@@ -31,6 +29,7 @@ export class ExtratoListComponent {
     public conta!: string;
     public paginaForm!: FormGroup;
     public modalForm!: FormGroup;
+    public modalForm2!: FormGroup;
     public totalElements = 0;
     public totalPages = 0;
     public pagina = 0;
@@ -38,7 +37,6 @@ export class ExtratoListComponent {
     public debitoLocalizado: boolean = false;
     public creditoLocalizado: boolean = false;
     public tituloModal: string = "";
-    public modalAbre: boolean = false;
     public totalDebitoIgual: any = 0;
     public totalCreditoIgual: any = 0;
     public totalDebitoDif: any = 0;
@@ -50,6 +48,7 @@ export class ExtratoListComponent {
     public dataFinal!: string;
     public totalDebitoConciliado: any = 0;
     public totalCreditoConciliado: any = 0;
+    public creditosExtrato: Extrato[] = [];
 
   ngOnInit(){
     const routeParans = this.route.snapshot.params;
@@ -76,6 +75,18 @@ export class ExtratoListComponent {
         debito: [],
         debitoId: []
       });
+
+      this.modalForm2 = this.fb.group({
+        id:[],
+        creditoExtratoId:[],
+        creditoContabilId:[],
+        debitoExtratoId:[],
+        debitoContabilId:[],
+        creditoExtrato:[],
+        creditoContabil:[],
+        debitoContabil:[],
+        debitoExtrato:[]
+      });
   }
 
   public totalListaExtrato(): void {
@@ -91,45 +102,57 @@ export class ExtratoListComponent {
   }
 
   public maisInformacoesDebito(item: Extrato): void{
-    this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
-        this.modalAbre = item.statusDebito;
-        console.log(this.modalAbre);
-        if(this.modalAbre){
+    this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExtratoEquivalente)=>{
           this.tituloModal = "Débito";
           this.modalForm.get("id")?.setValue(res.id);
           this.modalForm.get("debitoId")?.setValue(res.debitoId);
           this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
           this.modalForm.get("creditoId")?.setValue(res.creditoId);
           this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-        }
     });
   }
 
   public maisInformacoesCredito(item: Extrato): void{
-    this.extratoService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: ExratoConciliado)=>{
-        this.modalAbre = item.statusCredito;
-        console.log(this.modalAbre);
-        if(this.modalAbre){
+    this.extratoService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: ExtratoEquivalente)=>{
           this.tituloModal = "Crédito";
           this.modalForm.get("id")?.setValue(res.id);
           this.modalForm.get("debitoId")?.setValue(res.debitoId);
           this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
           this.modalForm.get("creditoId")?.setValue(res.creditoId);
           this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-        }
     });
   }
 
   public maisInformacoesConciliacaoCredito(item: Extrato): void {
-    console.log("Aqui e o ", item);
+    this.extratoService.conciliarCreditoExtratoContabilidade(item.id).pipe(take(1)).subscribe((res: ExtratoConciliado)=>{
+        this.tituloModal = "Crédito";
+        this.modalForm2.get("id")?.setValue(res.id);
+        this.modalForm2.get("creditoExtratoId")?.setValue(res.creditoExtratoId);
+        this.modalForm2.get("creditoExtrato")?.setValue(res.creditoExtrato.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        this.modalForm2.get("creditoContabilId")?.setValue(res.creditoContabilId);
+        this.modalForm2.get("creditoContabil")?.setValue(res.creditoContabil.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+      });
   }
 
   public maisInformacoesConciliacaoDebito(item: Extrato): void {
-    console.log("Aqui e o ", item);
+    this.extratoService.conciliarDebitoExtratoContabilidade(item.id).pipe(take(1)).subscribe((res: ExtratoConciliado)=>{
+        this.tituloModal = "Débito";
+        this.modalForm2.get("id")?.setValue(res.id);
+        this.modalForm2.get("debitoExtratoId")?.setValue(res.debitoExtratoId);
+        this.modalForm2.get("debitoExtrato")?.setValue(res.debitoExtrato.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        this.modalForm2.get("debitoContabilId")?.setValue(res.debitoContabilId);
+        this.modalForm2.get("debitoContabil")?.setValue(res.debitoContabil.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+      });
+  }
+
+  public adicionarCreditos(item: Extrato): void {
+        if(!item.statusCredito){
+            this.creditosExtrato.push(item);
+            console.log(this.creditosExtrato);
+        }
   }
 
   public limparModal(){
-    this.modalAbre = false;
     this.modalForm.reset();
   }
 
