@@ -5,5 +5,5 @@ export const routes: Routes = [
     { path: 'extrato', loadChildren: ()=> import('./modulos/extrato/extrato.routes').then((p)=> p.extratoRoutes) },
     { path: 'banco', loadChildren: ()=> import('./modulos/banco/banco.routes').then((p)=> p.bancoRoutes) },
     { path: 'contabil', loadChildren: ()=> import('./modulos/contabil/contabil.routes').then((p)=> p.contabilRoutes)},
-    { path: 'base', loadChildren: ()=> import('./modulos/base/base.routes').then((p)=> p.baseRoutes)}
+    { path: 'conciliado', loadChildren: ()=> import('./modulos/conciliado/conciliado.routes').then((p)=> p.conciliadoRoutes)}
 ];

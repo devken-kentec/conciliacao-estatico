@@ -1,3 +1,4 @@
+import { SharedService } from './../../shared/shared.service';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -13,13 +14,14 @@ export class ExtratoService {
   private tokenHeader: string =  environment.TOKEN;
 
   private http = inject(HttpClient);
+  private sharedService =inject(SharedService);
 
   constructor() { }
 
   public fullList(id: number, dataInicial: string, dataFinal:string): Observable<number> {
     const params = new HttpParams().set('id', id)
-                                   .set('dataInicial', dataInicial)
-                                   .set('dataFinal', dataFinal)
+                                   .set('dataInicial', this.sharedService.formatarDate(dataInicial))
+                                   .set('dataFinal', this.sharedService.formatarDate(dataFinal))
     return this.http.get<number>(`${this.api}/totalLista?${params.toString()}`);
   }
 
@@ -30,8 +32,8 @@ export class ExtratoService {
 
   public findAllFilter(id: number, dataInicial: string, dataFinal:string, page: number, size: number): Observable<Extrato[]> {
     const params = new HttpParams().set('id', id)
-                                   .set('dataInicial', dataInicial)
-                                   .set('dataFinal', dataFinal)
+                                   .set('dataInicial', this.sharedService.formatarDate(dataInicial))
+                                   .set('dataFinal', this.sharedService.formatarDate(dataFinal))
                                    .set('page', page)
                                    .set('size', size);
     return this.http.get<Extrato[]>(`${this.api}/listarFiltro?${params.toString()}`);

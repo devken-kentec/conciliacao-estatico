@@ -125,7 +125,7 @@
               >
               @if(item.statusCredito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}
             </a>
-            <a type="button" (click)="adicionarCreditos(item)">{{ sharedService.formatarNumerosDecimais(item.credito) }}</a>
+            {{ sharedService.formatarNumerosDecimais(item.credito) }}
               @if (item.statusCreditoConciliado) {
               <a
                 type="button"

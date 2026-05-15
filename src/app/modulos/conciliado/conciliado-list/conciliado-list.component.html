@@ -1,0 +1,306 @@
+<div class="col-12 col-md-12" style="margin-top: -30px">
+  <div class="col-12 col-md-12">
+    <div class="d-flex justify-content-center">
+      <h4>Extrato Bancário e Relatorio SIT</h4>
+    </div>
+    <div class="mb-3 d-flex justify-content-center" style="font-weight: bold">
+      BANCO-AG/CC: {{ banco }}-{{ agencia }}/{{ conta }}
+    </div>
+  </div>
+  <div class="col-12 col-md-12 row">
+    <div class="col-12 col-md-5">
+      <h4 class="text-center">Extrato Bancario</h4>
+      <div class="tabela" style="max-height: 900px; overflow-y: auto">
+        <table class="table table-hover" style="font-size: 10pt">
+          <thead>
+            <tr class="bg-success text-light">
+              <th>COD</th>
+              <th>DATA</th>
+              <th>LANÇAMENTO</th>
+              <th>RAZÃO SOCIAL</th>
+              <th style="text-align: end">CRÉDITO</th>
+              <th style="text-align: end">DÉBITO</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of extratos; track item.id) {
+              <tr>
+                <td>
+                  <strong>{{ item.id }}</strong>
+                </td>
+                <td>
+                  {{ item.data }}
+                </td>
+                <td>
+                  {{ item.lancamento }}
+                </td>
+                <td>
+                  {{ item.razaoSocial }}
+                </td>
+                <td
+                  [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
+                  style="text-align: end"
+                >
+                  <span>
+                    <a
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                    >
+                      @if (item.statusCredito) {
+                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                      }
+                    </a>
+                    {{ sharedService.formatarNumerosDecimais(item.credito) }}
+                    @if (item.statusCreditoConciliado) {
+                      <a
+                        type="button"
+                        style="font-size: 14pt; font-weight: bold; color: black"
+                        data-toggle="modal"
+                        data-target="#exampleModal2"
+                      >
+                        &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                      </a>
+                    }
+                  </span>
+                </td>
+                <td
+                  [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
+                  style="text-align: end"
+                >
+                  <span>
+                    <a
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                    >
+                      @if (item.statusDebito) {
+                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                      }
+                    </a>
+                    {{ sharedService.formatarNumerosDecimais(item.debito) }}
+                    @if (item.statusDebitoConciliado) {
+                      <a
+                        type="button"
+                        style="font-size: 14pt; font-weight: bold; color: black"
+                        data-toggle="modal"
+                        data-target="#exampleModal2"
+                      >
+                        &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                      </a>
+                    }
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <form
+          class="needs-validation"
+          novalidate
+          [formGroup]="paginaForm"
+          style="margin-top: 15px"
+        >
+          <div
+            class="row col-12 d-flex justify-content-center align-items-center"
+            style="font-size: 10pt"
+          >
+            <button
+              type="button"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Menor"
+              class="btn btn-info"
+              (click)="paginaMenor()"
+            >
+              <i class="fas fa-minus"></i> Anterior
+            </button>
+            <div
+              class="form-group"
+              style="margin-top: 15px; text-align: center; width: 120px"
+            >
+              <span>Pág. {{ pagina + 1 }} de {{ totalPages }}</span>
+            </div>
+            <button
+              type="button"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Maior"
+              class="btn btn-info"
+              (click)="paginaMaior()"
+            >
+              <i class="fas fa-plus"></i> Próximo
+            </button>
+            <div
+              class="form-group ml-1"
+              style="margin-top: 15px; text-align: center; width: 65px"
+            >
+              <select
+                class="form-control"
+                id="pegaTamanho"
+                name="quantPag"
+                formControlName="quantPag"
+                (change)="atualizaPagina()"
+              >
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="1500">1500</option>
+              </select>
+            </div>
+            <span class="float-right ml-1"
+              >Total de registro: {{ totalElementsExt }}</span
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <h4 class="text-center">Movimentação SIT</h4>
+      <div class="tabela" style="max-height: 900px; overflow-y: auto">
+        <table class="table table-hover" style="font-size: 10pt">
+          <thead>
+            <tr class="bg-success text-light">
+              <th>COD</th>
+              <th>DATA</th>
+              <th>CREDOR</th>
+              <th>MOVIMENTO</th>
+              <th style="text-align: end">CRÉDITO</th>
+              <th style="text-align: end">DÉBITO</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of contabil; track item.id) {
+              <tr>
+                <td>
+                  <strong>{{ item.id }}</strong>
+                </td>
+                <td>
+                  {{ item.data }}
+                </td>
+                <td>
+                  {{ item.credor }}
+                </td>
+                <td>
+                  {{ item.movimento }}
+                </td>
+                <td
+                  [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
+                  style="text-align: end"
+                >
+                  <span
+                    ><a
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      >{{
+                        sharedService.formatarNumerosDecimais(item.credito)
+                      }}</a
+                    >
+                    @if (item.statusCreditoConciliado) {
+                      <span
+                        style="font-size: 14pt; font-weight: bold; color: black"
+                        >&nbsp;<i class="fas fa-check"></i
+                      ></span>
+                    }
+                  </span>
+                </td>
+                <td
+                  [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
+                  style="text-align: end"
+                >
+                  <span
+                    ><a
+                      type="button"
+
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      >{{
+                        sharedService.formatarNumerosDecimais(item.debito)
+                      }}</a
+                    >
+                    @if (item.statusDebitoConciliado) {
+                      <span
+                        style="font-size: 14pt; font-weight: bold; color: black"
+                        >&nbsp;<i class="fas fa-check"></i
+                      ></span>
+                    }
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <form
+          class="needs-validation"
+          novalidate
+          [formGroup]="paginaForm2"
+          style="margin-top: 15px"
+        >
+          <div
+            class="row col-12 d-flex justify-content-center align-items-center"
+            style="font-size: 10pt"
+          >
+            <button
+              type="button"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Menor"
+              class="btn btn-info"
+              (click)="paginaMenorCont()"
+            >
+              <i class="fas fa-minus"></i> Anterior
+            </button>
+            <div
+              class="form-group"
+              style="margin-top: 15px; text-align: center; width: 120px"
+            >
+              <span>Pág. {{ pagina2 + 1 }} de {{ totalPages2 }}</span>
+            </div>
+            <button
+              type="button"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Maior"
+              class="btn btn-info"
+              (click)="paginaMaiorCont()"
+            >
+              <i class="fas fa-plus"></i> Próximo
+            </button>
+            <div
+              class="form-group ml-1"
+              style="margin-top: 15px; text-align: center; width: 65px"
+            >
+              <select
+                class="form-control"
+                id="pegaTamanho"
+                name="quantPag"
+                formControlName="quantPag"
+                (change)="atualizaPaginaCont()"
+              >
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="1500">1500</option>
+              </select>
+            </div>
+            <span class="float-right ml-1"
+              >Total de registro: {{ totalElementsCont }}</span
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <h1>Teste</h1>
+    </div>
+  </div>
+</div>

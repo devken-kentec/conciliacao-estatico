@@ -1,5 +1,5 @@
 import { SharedService } from './../../../shared/shared.service';
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { ExtratoService } from '../extrato.service';
 import { take } from 'rxjs';
 import { ExtratoEquivalente, Extrato, ExtratoConciliado } from '../../../domain/extrato.domain';
@@ -19,6 +19,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   styleUrl: './extrato-list.component.css'
 })
 export class ExtratoListComponent {
+    @Output() calcularContabilidade = new EventEmitter<void>();
+
     private extratoService = inject(ExtratoService);
     private fb = inject(FormBuilder);
     public sharedService = inject(SharedService);
@@ -48,7 +50,6 @@ export class ExtratoListComponent {
     public dataFinal!: string;
     public totalDebitoConciliado: any = 0;
     public totalCreditoConciliado: any = 0;
-    public creditosExtrato: Extrato[] = [];
 
   ngOnInit(){
     const routeParans = this.route.snapshot.params;
@@ -143,13 +144,6 @@ export class ExtratoListComponent {
         this.modalForm2.get("debitoContabilId")?.setValue(res.debitoContabilId);
         this.modalForm2.get("debitoContabil")?.setValue(res.debitoContabil.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
       });
-  }
-
-  public adicionarCreditos(item: Extrato): void {
-        if(!item.statusCredito){
-            this.creditosExtrato.push(item);
-            console.log(this.creditosExtrato);
-        }
   }
 
   public limparModal(){

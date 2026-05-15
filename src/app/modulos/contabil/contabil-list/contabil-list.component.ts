@@ -4,8 +4,9 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from '../../../shared/shared.service';
 import { Contabil } from '../../../domain/contabil.domain';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Extrato } from '../../../domain/extrato.domain';
 
 @Component({
   selector: 'app-contabil-list',
@@ -47,8 +48,12 @@ export class ContabilListComponent {
   public dataFinal!: string;
   public totalDebitoConciliado: any = 0;
   public totalCreditoConciliado: any = 0;
+  public somaCreditoExtrato: number = 0;
+  public creditosExtratoRecebidos!: Extrato[];
+
 
   ngOnInit(){
+
     const routeParans = this.route.snapshot.params;
     if(routeParans["idAgencia"] !== "" && routeParans["idAgencia"] > 0 && routeParans["idAgencia"] !== undefined){
       this.idAgencia = routeParans["idAgencia"];

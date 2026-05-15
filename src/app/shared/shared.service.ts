@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Extrato } from './../domain/extrato.domain';
+import { EventEmitter, Injectable, Output, Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-
-  constructor() { }
 
   public formatarNumerosDecimais(numero: number):string {
     let retorno = "";

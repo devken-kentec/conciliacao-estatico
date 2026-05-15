@@ -64,17 +64,18 @@ export class FiltroFormComponent {
         let ud = this.sharedService.ultimoDia(form.get("dataFinal")?.value);
 
         let idAgenciaConta = form.get("agenciaConta")?.value
-        let di = this.sharedService.formatarDate(pd);
-        let df = this.sharedService.formatarDate(ud);
         let caminho = form.get("tipo")?.value;
 
         if(caminho === "extrato") {
           //this.router.navigate(['/extrato', idAgenciaConta, di, df, caminho]);
-          const url = this.router.createUrlTree(['/extrato', idAgenciaConta, di, df, caminho]).toString();
+          const url = this.router.createUrlTree(['/extrato', idAgenciaConta, pd, ud, caminho]).toString();
           window.open(url, '_blank');
-        } else {
+        } else if(caminho === "contabil") {
           //this.router.navigate(["/contabil", idAgenciaConta, pd, ud, caminho]);
           const url = this.router.createUrlTree(['/contabil', idAgenciaConta, pd, ud, caminho]).toString();
+          window.open(url, '_blank');
+        } else {
+          const url = this.router.createUrlTree(['/conciliado', idAgenciaConta, pd, ud, caminho]).toString();
           window.open(url, '_blank');
         }
 

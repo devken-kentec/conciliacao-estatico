@@ -1,13 +1,1 @@
-.table td, .table th {
-    padding: .2rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
-}
 
-.mudaCheck {
-  color: #007bff;
-}
-
-.mudaCheck:hover {
-  color: red;
-}
