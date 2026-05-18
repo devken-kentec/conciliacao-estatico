@@ -46,6 +46,18 @@ export class ConciliadoListComponent {
   public idAgencia!: number;
   public dataInicial!: string;
   public dataFinal!: string;
+  public totalDebitoIgual: any = 0;
+  public totalCreditoIgual: any = 0;
+  public totalDebitoDif: any = 0;
+  public totalCreditoDif: any = 0;
+  public totalDebitoConciliado: any = 0;
+  public totalCreditoConciliado: any = 0;
+  public totalDebitoIgualC: any = 0;
+  public totalCreditoIgualC: any = 0;
+  public totalDebitoDifC: any = 0;
+  public totalCreditoDifC: any = 0;
+  public totalDebitoConciliadoC: any = 0;
+  public totalCreditoConciliadoC: any = 0;
 
   ngOnInit() {
     const routeParans = this.route.snapshot.params;
@@ -73,6 +85,13 @@ export class ConciliadoListComponent {
       );
       this.totalListaExtrato();
       this.totalListaContabil();
+
+      this.calculaTotalDebitoCreditoExtratoIgual();
+      this.calculaTotalDebitoCreditoExtratoDiferente();
+      this.calculaTotalDebitoCreditoExtratoConciliado();
+      this.calculaTotalDebitoCreditoContabilIgual();
+      this.calculaTotalDebitoCreditoContabilDiferente();
+      this.calculaTotalDebitoCreditoContabilConciliado();
     }
 
     this.paginaForm = this.fb.group({
@@ -188,6 +207,7 @@ export class ConciliadoListComponent {
       .pipe(take(1))
       .subscribe((res: Contabil[]) => {
         console.log(res);
+        this.contabil = res;
         res.forEach((element) => {
           // this.totalDebitoPagina = this.totalDebitoPagina + element.debito;
           // this.totalCreditoPagina = this.totalCreditoPagina + element.credito;
@@ -244,4 +264,85 @@ export class ConciliadoListComponent {
       this.paginaForm2.get('quantPag')?.value,
     );
   }
+
+  public truncarTexto(texto: string) {
+    let adicionarReticencias = true;
+    if (!texto) return '';
+
+    if (texto.length <= 20) {
+      return texto;
+    }
+
+    const textoTruncado = texto.substring(0, 20);
+    return adicionarReticencias ? `${textoTruncado}...` : textoTruncado;
+  }
+
+  public calculaTotalDebitoCreditoExtratoIgual(): void {
+    this.extratoService
+      .totalDebitoCreditoExtratoIguais(
+        this.idAgencia,
+        this.sharedService.formatarDate(this.dataInicial),
+        this.sharedService.formatarDate(this.dataFinal),
+      )
+      .pipe(take(1))
+      .subscribe((res: any) => {
+        //console.log(res);
+        this.totalCreditoIgual = res[0];
+        this.totalDebitoIgual = res[1];
+      });
+  }
+
+  public calculaTotalDebitoCreditoExtratoDiferente(): void {
+    this.extratoService
+      .totalDebitoCreditoExtratoDiferente(
+        this.idAgencia,
+        this.sharedService.formatarDate(this.dataInicial),
+        this.sharedService.formatarDate(this.dataFinal),
+      )
+      .pipe(take(1))
+      .subscribe((res: any) => {
+        //console.log(res);
+        this.totalCreditoDif = res[0];
+        this.totalDebitoDif = res[1];
+      });
+  }
+
+  public calculaTotalDebitoCreditoExtratoConciliado(): void {
+    this.extratoService
+      .totalDebitoCreditoExtratoConciliado(
+        this.idAgencia,
+        this.sharedService.formatarDate(this.dataInicial),
+        this.sharedService.formatarDate(this.dataFinal),
+      )
+      .pipe(take(1))
+      .subscribe((res: any) => {
+        //console.log(res);
+        this.totalCreditoConciliado = res[0];
+        this.totalDebitoConciliado = res[1];
+      });
+  }
+
+  public calculaTotalDebitoCreditoContabilIgual(): void {
+      this.contabilService.totalDebitoCreditoContabilIguais(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoIgualC = res[0];
+        this.totalCreditoIgualC = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoContabilDiferente(): void {
+      this.contabilService.totalDebitoCreditoContabilDiferente(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoDifC = res[0];
+        this.totalCreditoDifC = res[1];
+      });
+    }
+
+    public calculaTotalDebitoCreditoContabilConciliado(): void {
+      this.contabilService.totalDebitoCreditoContabilConciliado(this.idAgencia, this.dataInicial, this.dataFinal).pipe(take(1)).subscribe((res: any)=>{
+        //console.log(res);
+        this.totalDebitoConciliadoC = res[0];
+        this.totalCreditoConciliadoC = res[1];
+      });
+    }
 }

@@ -16,3 +16,13 @@
 .mudaCheck:hover {
   color: red;
 }
+
+.head-conciliacao {
+  font-size: 8pt;
+}
+
+.borda-resumo {
+   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+   border-radius: 10px;
+}
+

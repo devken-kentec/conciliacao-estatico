@@ -116,18 +116,28 @@
             [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
             style="text-align: end"
           >
-            <span
-              ><a
+            <span>
+              <a
                 type="button"
                 (click)="maisInformacoesCredito(item)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                >{{ sharedService.formatarNumerosDecimais(item.credito) }}</a
               >
+                @if (item.statusCredito) {
+                  <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                }
+              </a>
+              {{ sharedService.formatarNumerosDecimais(item.credito) }}
               @if (item.statusCreditoConciliado) {
-                <span style="font-size: 14pt; font-weight: bold; color: black"
-                  >&nbsp;<i class="fas fa-check"></i
-                ></span>
+                <a
+                  type="button"
+                  (click)="maisInformacoesConciliacaoCredito(item)"
+                  style="font-size: 14pt; font-weight: bold; color: black"
+                  data-toggle="modal"
+                  data-target="#exampleModal2"
+                >
+                  &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                </a>
               }
             </span>
           </td>
@@ -135,18 +145,28 @@
             [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
             style="text-align: end"
           >
-            <span
-              ><a
+            <span>
+              <a
                 type="button"
                 (click)="maisInformacoesDebito(item)"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                >{{ sharedService.formatarNumerosDecimais(item.debito) }}</a
               >
+                @if (item.statusDebito) {
+                  <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                }
+              </a>
+              {{ sharedService.formatarNumerosDecimais(item.debito) }}
               @if (item.statusDebitoConciliado) {
-                <span style="font-size: 14pt; font-weight: bold; color: black"
-                  >&nbsp;<i class="fas fa-check"></i
-                ></span>
+                <a
+                  type="button"
+                  (click)="maisInformacoesConciliacaoDebito(item)"
+                  style="font-size: 14pt; font-weight: bold; color: black"
+                  data-toggle="modal"
+                  data-target="#exampleModal2"
+                >
+                  &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                </a>
               }
             </span>
           </td>

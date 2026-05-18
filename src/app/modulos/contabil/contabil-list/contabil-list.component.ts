@@ -211,4 +211,19 @@ export class ContabilListComponent {
         this.totalCreditoConciliado = res[1];
       });
     }
+
+    public maisInformacoesConciliacaoCredito(item: Contabil): void {
+        // this.extratoService.conciliarCreditoExtratoContabilidade(item.id).pipe(take(1)).subscribe((res: ExtratoConciliado)=>{
+        //     this.tituloModal = "Crédito";
+        //     this.modalForm2.get("id")?.setValue(res.id);
+        //     this.modalForm2.get("creditoExtratoId")?.setValue(res.creditoExtratoId);
+        //     this.modalForm2.get("creditoExtrato")?.setValue(res.creditoExtrato.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        //     this.modalForm2.get("creditoContabilId")?.setValue(res.creditoContabilId);
+        //     this.modalForm2.get("creditoContabil")?.setValue(res.creditoContabil.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+        //   });
+      }
+
+      public maisInformacoesConciliacaoDebito(tem: Contabil): void {
+
+      }
 }

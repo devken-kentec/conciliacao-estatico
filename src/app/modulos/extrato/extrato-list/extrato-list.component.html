@@ -1,569 +1,639 @@
 <div class="container">
   <nav>
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
-    <li class="breadcrumb-item active">Extrato</li>
-  </ol>
-</nav>
-<div class="d-flex justify-content-center">
-  <h2>Extrato Bancário</h2>
-</div>
-<div class="mb-3" style="font-weight: bold">
-  BANCO-AG/CC: {{ banco }}-{{ agencia }}/{{ conta }}
-</div>
-<div class="col-12 col-md-12">
-  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-primary mb-3" (click)="mostrarSemelhante()">
-        <i class="fas fa-arrow-circle-down text-success"></i> Encontrar Idênticos no Extrato
-  </button>
-  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-secondary mb-3 ml-1" (click)="mostrarSemelhante()">
-        <i class="fas fa-exchange-alt text-success"></i>&nbsp;&nbsp;Conciliar Créditos com SIT
-  </button>
-  <button type="button" title="Iguais dentro da Movimenttação" style="margin-left: -15px;" class="btn btn-info mb-3 ml-1" (click)="mostrarSemelhante()">
-        <i class="fas fa-exchange-alt text-primary"></i>&nbsp;&nbsp;Conciliar Débitos com SIT
-  </button>
-  <button class="btn btn-primary ml-1"
-          type="button" data-toggle="collapse"
-          data-target="#multiCollapseExample2"
-          aria-expanded="false"
-          aria-controls="multiCollapseExample2"
-          style="margin-top: -16px;">
-          Legandas
-  </button>
-</div>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Início</a></li>
+      <li class="breadcrumb-item active">Extrato</li>
+    </ol>
+  </nav>
+  <div class="d-flex justify-content-center">
+    <h2>Extrato Bancário</h2>
+  </div>
+  <div class="mb-3" style="font-weight: bold">
+    BANCO-AG/CC: {{ banco }}-{{ agencia }}/{{ conta }}
+  </div>
+  <div class="col-12 col-md-12">
+    <button
+      type="button"
+      title="Iguais dentro da Movimenttação"
+      style="margin-left: -15px"
+      class="btn btn-primary mb-3"
+      (click)="mostrarSemelhante()"
+    >
+      <i class="fas fa-arrow-circle-down text-success"></i> Encontrar Idênticos
+      no Extrato
+    </button>
+    <button
+      type="button"
+      title="Iguais dentro da Movimenttação"
+      style="margin-left: -15px"
+      class="btn btn-secondary mb-3 ml-1"
+      (click)="mostrarSemelhante()"
+    >
+      <i class="fas fa-exchange-alt text-success"></i>&nbsp;&nbsp;Conciliar
+      Créditos com SIT
+    </button>
+    <button
+      type="button"
+      title="Iguais dentro da Movimenttação"
+      style="margin-left: -15px"
+      class="btn btn-info mb-3 ml-1"
+      (click)="mostrarSemelhante()"
+    >
+      <i class="fas fa-exchange-alt text-primary"></i>&nbsp;&nbsp;Conciliar
+      Débitos com SIT
+    </button>
+    <button
+      class="btn btn-primary ml-1"
+      type="button"
+      data-toggle="collapse"
+      data-target="#multiCollapseExample2"
+      aria-expanded="false"
+      aria-controls="multiCollapseExample2"
+      style="margin-top: -16px"
+    >
+      Legandas
+    </button>
+  </div>
   <div class="col mb-3 d-flex justify-content-center">
     <div class="collapse multi-collapse" id="multiCollapseExample2">
       <div class="card card-body p-5">
-        <span class="row"><i style="margin-top: 5px;" class="fas fa-arrow-circle-down text-success"></i>&nbsp;<span>Valores iguais de Crêdito e Dêbito dentro da Extrato</span></span>
-        <span class="row"><i style="margin-top: 5px;" class="fas fa-check mudaCheck"></i>&nbsp;Valores conciliados com a movimentação do SIT</span>
-        <span class="row"><i style="margin-top: 5px;" class="fas fa-exchange-alt text-success"></i>&nbsp; Excutar Conciliação com o SIT</span>
-        <span class="row"><span class="text-danger">R$ XX.XXX,XX</span> &nbsp; Valor sem corresponde entre Crédito e Débito no Extrato</span>
+        <span class="row"
+          ><i
+            style="margin-top: 5px"
+            class="fas fa-arrow-circle-down text-success"
+          ></i
+          >&nbsp;<span
+            >Valores iguais de Crêdito e Dêbito dentro da Extrato</span
+          ></span
+        >
+        <span class="row"
+          ><i style="margin-top: 5px" class="fas fa-check mudaCheck"></i
+          >&nbsp;Valores conciliados com a movimentação do SIT</span
+        >
+        <span class="row"
+          ><i
+            style="margin-top: 5px"
+            class="fas fa-exchange-alt text-success"
+          ></i
+          >&nbsp; Excutar Conciliação com o SIT</span
+        >
+        <span class="row"
+          ><span class="text-danger">R$ XX.XXX,XX</span> &nbsp; Valor sem
+          corresponde entre Crédito e Débito no Extrato</span
+        >
       </div>
     </div>
   </div>
-<div class="col-12 col-md-12 row" style="font-size: 10pt;">
-  <div class="col-12 col-md-4">
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Crédito Iguais:&nbsp;</span>
-      <span class="text-success">{{
-        sharedService.formatarNumerosDecimais(totalCreditoIgual)
-      }}</span>
+  <div class="col-12 col-md-12 row" style="font-size: 10pt">
+    <div class="col-12 col-md-4">
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Crédito Iguais:&nbsp;</span>
+        <span class="text-success">{{
+          sharedService.formatarNumerosDecimais(totalCreditoIgual)
+        }}</span>
+      </div>
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Débito Iguais:&nbsp;</span>
+        <span class="text-success">{{
+          sharedService.formatarNumerosDecimais(totalDebitoIgual)
+        }}</span>
+      </div>
     </div>
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Débito Iguais:&nbsp;</span>
-      <span class="text-success">{{
-        sharedService.formatarNumerosDecimais(totalDebitoIgual)
-      }}</span>
+    <div class="col-12 col-md-4">
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Crédito Diferente:&nbsp;</span>
+        <span class="text-danger">{{
+          sharedService.formatarNumerosDecimais(totalCreditoDif)
+        }}</span>
+      </div>
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Débito Diferente:&nbsp;</span>
+        <span class="text-danger">{{
+          sharedService.formatarNumerosDecimais(totalDebitoDif)
+        }}</span>
+      </div>
     </div>
+    <div class="col-12 col-md-4">
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Crédito Conciliado:&nbsp;</span>
+        <span class="text-primary">{{
+          sharedService.formatarNumerosDecimais(totalCreditoConciliado)
+        }}</span>
+      </div>
+      <div class="d-flex justify-content-end">
+        <span class="total">Total Débito Conciliado:&nbsp;</span>
+        <span class="text-primary">{{
+          sharedService.formatarNumerosDecimais(totalDebitoConciliado)
+        }}</span>
+      </div>
+    </div>
+    <br />
   </div>
-  <div class="col-12 col-md-4">
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Crédito Diferente:&nbsp;</span>
-      <span class="text-danger">{{
-        sharedService.formatarNumerosDecimais(totalCreditoDif)
-      }}</span>
-    </div>
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Débito Diferente:&nbsp;</span>
-      <span class="text-danger">{{
-        sharedService.formatarNumerosDecimais(totalDebitoDif)
-      }}</span>
-    </div>
-  </div>
-  <div class="col-12 col-md-4">
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Crédito Conciliado:&nbsp;</span>
-      <span class="text-primary">{{
-        sharedService.formatarNumerosDecimais(totalCreditoConciliado)
-      }}</span>
-    </div>
-    <div class="d-flex justify-content-end">
-      <span class="total">Total Débito Conciliado:&nbsp;</span>
-      <span class="text-primary">{{
-        sharedService.formatarNumerosDecimais(totalDebitoConciliado)
-      }}</span>
-    </div>
-  </div>
-  <br/>
-</div>
-<br>
-<table class="table table-hover" style="font-size: 10pt">
-  <thead>
-    <tr class="bg-success text-light">
-      <th>COD</th>
-      <th>DATA</th>
-      <th>LANÇAMENTO</th>
-      <th>RAZÃO SOCIAL</th>
-      <th style="text-align: end">CRÉDITO</th>
-      <th style="text-align: end">DÉBITO</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (item of extratos; track item.id) {
-      <tr>
-        <td>
-          <strong>{{ item.id }}</strong>
-        </td>
-        <td>
-          {{ item.data }}
-        </td>
-        <td>
-          {{ item.lancamento }}
-        </td>
-        <td>
-          {{ item.razaoSocial }}
-        </td>
-        <td
-          [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
-          style="text-align: end"
-        >
-          <span>
-            <a
-              type="button"
-              (click)="maisInformacoesCredito(item)"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              >
-              @if(item.statusCredito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}
-            </a>
-            {{ sharedService.formatarNumerosDecimais(item.credito) }}
-              @if (item.statusCreditoConciliado) {
+  <br />
+  <table class="table table-hover" style="font-size: 10pt">
+    <thead>
+      <tr class="bg-success text-light">
+        <th>COD</th>
+        <th>DATA</th>
+        <th>LANÇAMENTO</th>
+        <th>RAZÃO SOCIAL</th>
+        <th style="text-align: end">CRÉDITO</th>
+        <th style="text-align: end">DÉBITO</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of extratos; track item.id) {
+        <tr>
+          <td>
+            <strong>{{ item.id }}</strong>
+          </td>
+          <td>
+            {{ item.data }}
+          </td>
+          <td>
+            {{ item.lancamento }}
+          </td>
+          <td>
+            {{ item.razaoSocial }}
+          </td>
+          <td
+            [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
+            style="text-align: end"
+          >
+            <span>
               <a
                 type="button"
-                (click)="maisInformacoesConciliacaoCredito(item)"
-                style="font-size: 14pt; font-weight: bold; color: black"
+                (click)="maisInformacoesCredito(item)"
                 data-toggle="modal"
-                data-target="#exampleModal2"
+                data-target="#exampleModal"
               >
-                &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
-              </a>
-              }
-          </span>
-        </td>
-        <td
-          [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
-          style="text-align: end"
-        >
-          <span >
-            <a
-              type="button"
-              (click)="maisInformacoesDebito(item)"
-              data-toggle="modal"
-              data-target="#exampleModal"
-              > @if(item.statusDebito){<i class="fas fa-arrow-circle-down"></i>&nbsp;}</a>
-              {{ sharedService.formatarNumerosDecimais(item.debito) }}
-                @if (item.statusDebitoConciliado) {
-                  <a
-                    type="button"
-                    (click)="maisInformacoesConciliacaoDebito(item)"
-                    style="font-size: 14pt; font-weight: bold; color: black"
-                    data-toggle="modal"
-                    data-target="#exampleModal2"
-                  >
-                    &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
-                  </a>
+                @if (item.statusCredito) {
+                  <i class="fas fa-arrow-circle-down"></i>&nbsp;
                 }
-          </span>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
-<hr />
-<div
-  class="col-12 col-md-12 d-flex justify-content-end"
-  style="font-weight: bold"
->
-  <span class="col-md-8" style="text-align: end">Total por Página: </span
-  ><span class="col-md-2" style="text-align: end">{{
-    sharedService.formatarNumerosDecimais(totalCreditoPagina)
-  }}</span
-  ><span class="col-md-2" style="text-align: end">{{
-    sharedService.formatarNumerosDecimais(totalDebitoPagina)
-  }}</span>
-</div>
-<form
-  class="needs-validation"
-  novalidate
-  [formGroup]="paginaForm"
-  style="margin-top: 15px"
->
+              </a>
+              {{ sharedService.formatarNumerosDecimais(item.credito) }}
+              @if (item.statusCreditoConciliado) {
+                <a
+                  type="button"
+                  (click)="maisInformacoesConciliacaoCredito(item)"
+                  style="font-size: 14pt; font-weight: bold; color: black"
+                  data-toggle="modal"
+                  data-target="#exampleModal2"
+                >
+                  &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                </a>
+              }
+            </span>
+          </td>
+          <td
+            [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
+            style="text-align: end"
+          >
+            <span>
+              <a
+                type="button"
+                (click)="maisInformacoesDebito(item)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                @if (item.statusDebito) {
+                  <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                }
+              </a>
+              {{ sharedService.formatarNumerosDecimais(item.debito) }}
+              @if (item.statusDebitoConciliado) {
+                <a
+                  type="button"
+                  (click)="maisInformacoesConciliacaoDebito(item)"
+                  style="font-size: 14pt; font-weight: bold; color: black"
+                  data-toggle="modal"
+                  data-target="#exampleModal2"
+                >
+                  &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                </a>
+              }
+            </span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <hr />
   <div
-    class="row col-12 d-flex justify-content-center align-items-center"
-    style="font-size: 10pt"
+    class="col-12 col-md-12 d-flex justify-content-end"
+    style="font-weight: bold"
   >
-    <button
-      type="button"
-      data-toggle="tooltip"
-      data-placement="top"
-      title="Menor"
-      class="btn btn-info"
-      (click)="paginaMenor()"
-    >
-      <i class="fas fa-minus"></i> Anterior
-    </button>
+    <span class="col-md-8" style="text-align: end">Total por Página: </span
+    ><span class="col-md-2" style="text-align: end">{{
+      sharedService.formatarNumerosDecimais(totalCreditoPagina)
+    }}</span
+    ><span class="col-md-2" style="text-align: end">{{
+      sharedService.formatarNumerosDecimais(totalDebitoPagina)
+    }}</span>
+  </div>
+  <form
+    class="needs-validation"
+    novalidate
+    [formGroup]="paginaForm"
+    style="margin-top: 15px"
+  >
     <div
-      class="form-group"
-      style="margin-top: 15px; text-align: center; width: 120px"
+      class="row col-12 d-flex justify-content-center align-items-center"
+      style="font-size: 10pt"
     >
-      <span>Pág. {{ pagina + 1 }} de {{ totalPages }}</span>
-    </div>
-    <button
-      type="button"
-      data-toggle="tooltip"
-      data-placement="top"
-      title="Maior"
-      class="btn btn-info"
-      (click)="paginaMaior()"
-    >
-      <i class="fas fa-plus"></i> Próximo
-    </button>
-    <div
-      class="form-group ml-1"
-      style="margin-top: 15px; text-align: center; width: 65px"
-    >
-      <select
-        class="form-control"
-        id="pegaTamanho"
-        name="quantPag"
-        formControlName="quantPag"
-        (change)="atualizaPagina()"
+      <button
+        type="button"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Menor"
+        class="btn btn-info"
+        (click)="paginaMenor()"
       >
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="250">250</option>
-        <option value="500">500</option>
-        <option value="1000">1000</option>
-        <option value="1500">1500</option>
-      </select>
+        <i class="fas fa-minus"></i> Anterior
+      </button>
+      <div
+        class="form-group"
+        style="margin-top: 15px; text-align: center; width: 120px"
+      >
+        <span>Pág. {{ pagina + 1 }} de {{ totalPages }}</span>
+      </div>
+      <button
+        type="button"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Maior"
+        class="btn btn-info"
+        (click)="paginaMaior()"
+      >
+        <i class="fas fa-plus"></i> Próximo
+      </button>
+      <div
+        class="form-group ml-1"
+        style="margin-top: 15px; text-align: center; width: 65px"
+      >
+        <select
+          class="form-control"
+          id="pegaTamanho"
+          name="quantPag"
+          formControlName="quantPag"
+          (change)="atualizaPagina()"
+        >
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="250">250</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+          <option value="1500">1500</option>
+        </select>
+      </div>
+      <span class="float-right ml-1"
+        >Total de registro: {{ totalElements }}</span
+      >
     </div>
-    <span class="float-right ml-1">Total de registro: {{ totalElements }}</span>
+  </form>
+  <!-- Modal dos Valores Equivalentes dentro do Extrato -->
+  <div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Dados do {{ tituloModal }}
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              (click)="limparModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="modalForm">
+              @if (tituloModal === "Débito") {
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamento">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamento"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoDebito">Cód. Déb.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoDebito"
+                      formControlName="debitoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorDebito">Valor Débito:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorDebito"
+                      formControlName="debito"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+                <hr />
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamento">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamento"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoCredito">Cód. Créd.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoCredito"
+                      formControlName="creditoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCredito">Valor Crédito:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCredito"
+                      formControlName="credito"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+              } @else {
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamento1">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamento1"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoCredito">Cód. Créd.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoCredito"
+                      formControlName="creditoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCredito">Valor Crédito:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCredito"
+                      formControlName="credito"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+                <hr />
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamento2">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamento2"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoDebito">Cód. Déb.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoDebito"
+                      formControlName="debitoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorDebito">Valor Débito:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorDebito"
+                      formControlName="debito"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+              }
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              (click)="limparModal()"
+            >
+              Fechar
+            </button>
+            <button type="button" class="btn btn-success">
+              Alterar Conciliação
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</form>
-<!-- Modal dos Valores Equivalentes dentro do Extrato -->
-<div>
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            Dados do {{ tituloModal }}
-          </h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-            (click)="limparModal()"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="modalForm">
-            @if (tituloModal === "Débito") {
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamento">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamento"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
+  <div>
+    <div
+      class="modal fade"
+      id="exampleModal2"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Conciliação Créditos
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="modalForm2">
+              @if (tituloModal === "Crédito") {
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamentoc">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamentoc"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoDebitoc">Créd. Ext.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoDebitoc"
+                      formControlName="creditoExtratoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCreditoc">Valor Créd. Ext.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCreditoc"
+                      formControlName="creditoExtrato"
+                      [readOnly]="true"
+                    />
+                  </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoDebito">Cód. Déb.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoDebito"
-                    formControlName="debitoId"
-                  />
+                <hr />
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamentoc2">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamentoc2"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoCreditosit">Créd. Sit.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoCreditosir"
+                      formControlName="creditoContabilId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCreditodit">Valor Crédito Sit.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCreditosit"
+                      formControlName="creditoContabil"
+                      [readOnly]="true"
+                    />
+                  </div>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="valorDebito">Valor Débito:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorDebito"
-                    formControlName="debito"
-                    [readOnly]="true"
-                  />
+              } @else {
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamentoc">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamentoc"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoDebitoc">Créd. Ext.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoDebitoc"
+                      formControlName="debitoExtratoId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCreditoc">Valor Créd. Ext.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCreditoc"
+                      formControlName="debitoExtrato"
+                      [readOnly]="true"
+                    />
+                  </div>
                 </div>
-              </div>
-              <hr />
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamento">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamento"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
+                <hr />
+                <div class="form-row col-md-12">
+                  <div class="form-group col-md-3">
+                    <label for="lancamentoc2">Lançamento:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lancamentoc2"
+                      formControlName="id"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="codigoCreditosit">Créd. Sit.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="codigoCreditosir"
+                      formControlName="debitoContabilId"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="valorCreditodit">Valor Crédito Sit.:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="valorCreditosit"
+                      formControlName="debitoContabil"
+                      [readOnly]="true"
+                    />
+                  </div>
                 </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoCredito">Cód. Créd.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoCredito"
-                    formControlName="creditoId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCredito">Valor Crédito:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCredito"
-                    formControlName="credito"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-            } @else {
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamento1">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamento1"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoCredito">Cód. Créd.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoCredito"
-                    formControlName="creditoId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCredito">Valor Crédito:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCredito"
-                    formControlName="credito"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamento2">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamento2"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoDebito">Cód. Déb.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoDebito"
-                    formControlName="debitoId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorDebito">Valor Débito:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorDebito"
-                    formControlName="debito"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-            }
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-dismiss="modal"
-            (click)="limparModal()"
-          >
-            Fechar
-          </button>
-          <button type="button" class="btn btn-success">
-            Alterar Conciliação
-          </button>
+              }
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div>
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Conciliação Créditos</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="modalForm2">
-            @if (tituloModal === "Crédito") {
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamentoc">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamentoc"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoDebitoc">Créd. Ext.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoDebitoc"
-                    formControlName="creditoExtratoId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCreditoc">Valor Créd. Ext.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCreditoc"
-                    formControlName="creditoExtrato"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamentoc2">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamentoc2"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoCreditosit">Créd. Sit.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoCreditosir"
-                    formControlName="creditoContabilId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCreditodit">Valor Crédito Sit.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCreditosit"
-                    formControlName="creditoContabil"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-            } @else {
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamentoc">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamentoc"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoDebitoc">Créd. Ext.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoDebitoc"
-                    formControlName="debitoExtratoId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCreditoc">Valor Créd. Ext.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCreditoc"
-                    formControlName="debitoExtrato"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-              <hr />
-              <div class="form-row col-md-12">
-                <div class="form-group col-md-3">
-                  <label for="lancamentoc2">Lançamento:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lancamentoc2"
-                    formControlName="id"
-                    [readOnly]="true"
-                  />
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="codigoCreditosit">Créd. Sit.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="codigoCreditosir"
-                    formControlName="debitoContabilId"
-                  />
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="valorCreditodit">Valor Crédito Sit.:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="valorCreditosit"
-                    formControlName="debitoContabil"
-                    [readOnly]="true"
-                  />
-                </div>
-              </div>
-            }
-        </form>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-

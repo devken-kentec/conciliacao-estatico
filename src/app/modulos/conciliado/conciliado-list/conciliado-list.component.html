@@ -13,7 +13,7 @@
       <div class="tabela" style="max-height: 900px; overflow-y: auto">
         <table class="table table-hover" style="font-size: 10pt">
           <thead>
-            <tr class="bg-success text-light">
+            <tr class="bg-success text-light head-conciliacao">
               <th>COD</th>
               <th>DATA</th>
               <th>LANÇAMENTO</th>
@@ -164,7 +164,7 @@
       <div class="tabela" style="max-height: 900px; overflow-y: auto">
         <table class="table table-hover" style="font-size: 10pt">
           <thead>
-            <tr class="bg-success text-light">
+            <tr class="bg-success text-light head-conciliacao">
               <th>COD</th>
               <th>DATA</th>
               <th>CREDOR</th>
@@ -182,8 +182,8 @@
                 <td>
                   {{ item.data }}
                 </td>
-                <td>
-                  {{ item.credor }}
+                <td [title]="item.credor">
+                  {{ truncarTexto(item.credor) }}
                 </td>
                 <td>
                   {{ item.movimento }}
@@ -192,20 +192,26 @@
                   [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
                   style="text-align: end"
                 >
-                  <span
-                    ><a
+                  <span>
+                    <a
                       type="button"
                       data-toggle="modal"
                       data-target="#exampleModal"
-                      >{{
-                        sharedService.formatarNumerosDecimais(item.credito)
-                      }}</a
                     >
+                      @if (item.statusCredito) {
+                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                      }
+                    </a>
+                    {{ sharedService.formatarNumerosDecimais(item.credito) }}
                     @if (item.statusCreditoConciliado) {
-                      <span
+                      <a
+                        type="button"
                         style="font-size: 14pt; font-weight: bold; color: black"
-                        >&nbsp;<i class="fas fa-check"></i
-                      ></span>
+                        data-toggle="modal"
+                        data-target="#exampleModal2"
+                      >
+                        &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                      </a>
                     }
                   </span>
                 </td>
@@ -213,21 +219,26 @@
                   [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
                   style="text-align: end"
                 >
-                  <span
-                    ><a
+                  <span>
+                    <a
                       type="button"
-
                       data-toggle="modal"
                       data-target="#exampleModal"
-                      >{{
-                        sharedService.formatarNumerosDecimais(item.debito)
-                      }}</a
                     >
+                      @if (item.statusDebito) {
+                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                      }
+                    </a>
+                    {{ sharedService.formatarNumerosDecimais(item.debito) }}
                     @if (item.statusDebitoConciliado) {
-                      <span
+                      <a
+                        type="button"
                         style="font-size: 14pt; font-weight: bold; color: black"
-                        >&nbsp;<i class="fas fa-check"></i
-                      ></span>
+                        data-toggle="modal"
+                        data-target="#exampleModal2"
+                      >
+                        &nbsp;&nbsp;<i class="fas fa-check mudaCheck"></i>
+                      </a>
                     }
                   </span>
                 </td>
@@ -299,8 +310,89 @@
         </form>
       </div>
     </div>
-    <div class="col-12 col-md-2">
-      <h1>Teste</h1>
+    <div class="col-12 col-md-2 mt-1">
+      <h3 class="text-center">Resumo Financeiro</h3>
+      <div class="col-12 col-md-12 md borda-resumo ml-3">
+        <div style="font-weight: bold">Extratos</div>
+        <div class="col-12 col-md-12 row" style="font-size: 8pt">
+          <table>
+            <tr>
+              <td class="total">Total Crédito Iguais:</td>
+              <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</td>
+            </tr>
+            <tr>
+              <td class="total">Total Débito Iguais:</td>
+              <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</td>
+            </tr>
+            <tr>
+              <td class="total">Total Crédito Diferente:</td>
+              <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoDif) }}</td>
+            </tr>
+            <tr>
+              <td class="total">Total Débito Diferente:</td>
+              <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoDif) }}</td>
+            </tr>
+            <tr>
+              <td class="total">Total Crédito Conciliado:</td>
+              <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliado) }}</td>
+            </tr>
+            <tr>
+              <td class="total">Total Débito Conciliado:</td>
+              <td class="text-primary d-flex justify-content-end"> {{ sharedService.formatarNumerosDecimais(totalDebitoConciliado) }}</td>
+            </tr>
+          </table>
+          <br/>
+          </div>
+          <br />
+          <div style="font-weight: bold">SIT</div>
+          <div class="col-12 col-md-12 row" style="font-size: 8pt">
+            <table>
+              <tr>
+                <td class="total">Total Crédito Iguais:</td>
+                <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoIgualC) }} </td>
+              </tr>
+              <tr>
+                <td class="total">Total Débito Iguais:</td>
+                <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoIgualC) }}</td>
+              </tr>
+              <tr>
+                <td class="total">Total Crédito Diferente:</td>
+                <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoDifC) }}</td>
+              </tr>
+              <tr>
+                <td class="total">Total Débito Diferente:</td>
+                <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoDifC) }}</td>
+              </tr>
+              <tr>
+                <td class="total">Total Crédito Conciliado:</td>
+                <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliadoC) }}</td>
+              </tr>
+              <tr>
+                <td class="total">Total Débito Conciliado:</td>
+                <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoConciliadoC) }}</td>
+              </tr>
+            </table>
+          </div>
+          <br>
+        </div>
+        <br>
+        <h4 class="text-center">Calculos de Conciliação</h4>
+        <div class="col-12 col-md-12 md borda-resumo ml-3">
+          <div style="font-weight: bold">Conciliação Crédito</div>
+          <tr class="d-flex justify-content-around">
+            <th>Extrato</th>
+            <th>SIT</th>
+          </tr>
+        </div>
+        <br>
+        <div class="col-12 col-md-12 md borda-resumo ml-3">
+            <div style="font-weight: bold">Conciliação Débito</div>
+            <tr class="d-flex justify-content-around">
+            <th>Extrato</th>
+            <th>SIT</th>
+          </tr>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
