@@ -38,7 +38,6 @@
                   {{ item.razaoSocial }}
                 </td>
                 <td
-                  [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
                   style="text-align: end"
                 >
                   <span>
@@ -48,10 +47,10 @@
                       data-target="#exampleModal"
                     >
                       @if (item.statusCredito) {
-                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                        <i class="fas fa-arrow-circle-down text-success"></i>&nbsp;
                       }
                     </a>
-                    {{ sharedService.formatarNumerosDecimais(item.credito) }}
+                    <a type="button" [ngStyle]="{ color: item.statusCreditoConciliado ? 'green' : 'red' }" (click)="creditoExtrato(item.credito)"> {{ sharedService.formatarNumerosDecimais(item.credito) }} </a>
                     @if (item.statusCreditoConciliado) {
                       <a
                         type="button"
@@ -65,7 +64,6 @@
                   </span>
                 </td>
                 <td
-                  [ngStyle]="{ color: item.statusDebito ? 'green' : 'red' }"
                   style="text-align: end"
                 >
                   <span>
@@ -75,10 +73,10 @@
                       data-target="#exampleModal"
                     >
                       @if (item.statusDebito) {
-                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                        <i class="fas fa-arrow-circle-down text-success"></i>&nbsp;
                       }
                     </a>
-                    {{ sharedService.formatarNumerosDecimais(item.debito) }}
+                    <a type="button" [ngStyle]="{ color: item.statusDebitoConciliado ? 'green' : 'red' }">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a>
                     @if (item.statusDebitoConciliado) {
                       <a
                         type="button"
@@ -189,7 +187,6 @@
                   {{ item.movimento }}
                 </td>
                 <td
-                  [ngStyle]="{ color: item.statusCredito ? 'green' : 'red' }"
                   style="text-align: end"
                 >
                   <span>
@@ -199,10 +196,10 @@
                       data-target="#exampleModal"
                     >
                       @if (item.statusCredito) {
-                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                        <i class="fas fa-arrow-circle-down text-success"></i>&nbsp;
                       }
                     </a>
-                    {{ sharedService.formatarNumerosDecimais(item.credito) }}
+                    <a type="button" [ngStyle]="{ color: item.statusCreditoConciliado ? 'green' : 'red' }" (click)="creditoSit(item.credito)"> {{ sharedService.formatarNumerosDecimais(item.credito) }} </a>
                     @if (item.statusCreditoConciliado) {
                       <a
                         type="button"
@@ -226,10 +223,10 @@
                       data-target="#exampleModal"
                     >
                       @if (item.statusDebito) {
-                        <i class="fas fa-arrow-circle-down"></i>&nbsp;
+                        <i class="fas fa-arrow-circle-down text-success"></i>&nbsp;
                       }
                     </a>
-                    {{ sharedService.formatarNumerosDecimais(item.debito) }}
+                    <a type="button" [ngStyle]="{ color: item.statusDebitoConciliado ? 'green' : 'red' }">{{ sharedService.formatarNumerosDecimais(item.debito) }}</a>
                     @if (item.statusDebitoConciliado) {
                       <a
                         type="button"
@@ -318,11 +315,11 @@
           <table>
             <tr>
               <td class="total">Total Crédito Iguais:</td>
-              <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</td>
+              <td class="text-success d-flex justify-content-end"><i class="fas fa-arrow-circle-down text-success"></i>{{ sharedService.formatarNumerosDecimais(totalCreditoIgual) }}</td>
             </tr>
             <tr>
               <td class="total">Total Débito Iguais:</td>
-              <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</td>
+              <td class="text-success d-flex justify-content-end"><i class="fas fa-arrow-circle-down text-success"></i>{{ sharedService.formatarNumerosDecimais(totalDebitoIgual) }}</td>
             </tr>
             <tr>
               <td class="total">Total Crédito Diferente:</td>
@@ -333,11 +330,11 @@
               <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoDif) }}</td>
             </tr>
             <tr>
-              <td class="total">Total Crédito Conciliado:</td>
+              <td class="total">Tot. Crédito Conciliado:</td>
               <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliado) }}</td>
             </tr>
             <tr>
-              <td class="total">Total Débito Conciliado:</td>
+              <td class="total">Tot. Débito Conciliado:</td>
               <td class="text-primary d-flex justify-content-end"> {{ sharedService.formatarNumerosDecimais(totalDebitoConciliado) }}</td>
             </tr>
           </table>
@@ -349,11 +346,11 @@
             <table>
               <tr>
                 <td class="total">Total Crédito Iguais:</td>
-                <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoIgualC) }} </td>
+                <td class="text-success d-flex justify-content-end"><i class="fas fa-arrow-circle-down text-success"></i>{{ sharedService.formatarNumerosDecimais(totalCreditoIgualC) }} </td>
               </tr>
               <tr>
                 <td class="total">Total Débito Iguais:</td>
-                <td class="text-success d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoIgualC) }}</td>
+                <td class="text-success d-flex justify-content-end"><i class="fas fa-arrow-circle-down text-success"></i>{{ sharedService.formatarNumerosDecimais(totalDebitoIgualC) }}</td>
               </tr>
               <tr>
                 <td class="total">Total Crédito Diferente:</td>
@@ -364,11 +361,11 @@
                 <td class="text-danger d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoDifC) }}</td>
               </tr>
               <tr>
-                <td class="total">Total Crédito Conciliado:</td>
+                <td class="total">Tot. Crédito Conciliado:</td>
                 <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalCreditoConciliadoC) }}</td>
               </tr>
               <tr>
-                <td class="total">Total Débito Conciliado:</td>
+                <td class="total">Tot. Débito Conciliado:</td>
                 <td class="text-primary d-flex justify-content-end">{{ sharedService.formatarNumerosDecimais(totalDebitoConciliadoC) }}</td>
               </tr>
             </table>
@@ -379,10 +376,49 @@
         <h4 class="text-center">Calculos de Conciliação</h4>
         <div class="col-12 col-md-12 md borda-resumo ml-3">
           <div style="font-weight: bold">Conciliação Crédito</div>
-          <tr class="d-flex justify-content-around">
-            <th>Extrato</th>
-            <th>SIT</th>
-          </tr>
+          <div class="d-flex justify-content-around" style="font-weight: bold;">
+            <div>Extrato</div>
+            <div>SIT</div>
+          </div>
+          <div>
+            <div class="row">
+              <ul class="list-group">
+                @for (item of creditoExtratoArray; track item) {
+                  <li class="list-group-item" style="text-align: end; font-size: 10pt;">
+                    <a type="button" (click)="retirarCreditoExtrato(item)" >{{ sharedService.formatarNumerosDecimais(item) }}</a>
+                  </li>
+                }
+              </ul>
+              <ul class="list-group">
+                @for (item of creditoSitArray; track item) {
+                  <li class="list-group-item" style="text-align: end; font-size: 10pt;">
+                    <a type="button" (click)="retirarCreditoSit(item)" >{{ sharedService.formatarNumerosDecimais(item) }}</a>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>  
+          <div class="row" style="font-weight: bold; font-size: 10pt;">
+            <div style="margin-left: 35px;"> 
+              {{ sharedService.formatarNumerosDecimais(this.somaCreditoExtratoArray) }}
+            </div>
+            <div style="margin-left: 35px;"> 
+              {{ sharedService.formatarNumerosDecimais(this.somaCreditoSitArray) }}
+            </div>
+          </div>
+            <div class="d-flex justify-content-center">
+              @if(this.somaCreditoExtratoArray > this.somaCreditoSitArray){
+              <span >Extrato Maior que SIT</span>
+              }
+              @if(this.somaCreditoSitArray > this.somaCreditoExtratoArray){
+                <span>SIT Maior que Extrato</span>
+              }
+            </div>
+            @if(resultadoCredito){
+              <div class="row d-flex justify-content-center" style="font-weight: bold; color: blue;">
+                  Diferença: {{ sharedService.formatarNumerosDecimais(resultadoCredito) }}
+              </div>
+            }
         </div>
         <br>
         <div class="col-12 col-md-12 md borda-resumo ml-3">

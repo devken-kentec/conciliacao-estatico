@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Extrato } from '../../../domain/extrato.domain';
+import { Extrato, ExtratoEquivalente } from '../../../domain/extrato.domain';
 import { ExtratoService } from '../../extrato/extrato.service';
 import { SharedService } from '../../../shared/shared.service';
 import { take } from 'rxjs';
@@ -31,6 +31,8 @@ export class ConciliadoListComponent {
   public banco!: string;
   public agencia!: string;
   public conta!: string;
+  public tituloModal!: string;
+  public modalForm!: FormGroup;
   public paginaForm!: FormGroup;
   public paginaForm2!: FormGroup;
   public totalElementsExt = 0;
@@ -58,6 +60,11 @@ export class ConciliadoListComponent {
   public totalCreditoDifC: any = 0;
   public totalDebitoConciliadoC: any = 0;
   public totalCreditoConciliadoC: any = 0;
+  public creditoExtratoArray: number[] = [];
+  public somaCreditoExtratoArray: number = 0;
+  public creditoSitArray: number[] = [];
+  public somaCreditoSitArray: number = 0;
+  public resultadoCredito: number = 0;
 
   ngOnInit() {
     const routeParans = this.route.snapshot.params;
@@ -101,6 +108,16 @@ export class ConciliadoListComponent {
     this.paginaForm2 = this.fb.group({
       quantPag: [50],
     });
+
+    this.modalForm = this.fb.group({
+        id: [],
+        credito: [],
+        creditoId: [],
+        dataCred: [],
+        dataDeb: [],
+        debito: [],
+        debitoId: []
+      });
   }
 
   public totalListaExtrato(): void {
@@ -265,6 +282,28 @@ export class ConciliadoListComponent {
     );
   }
 
+  public maisInformacoesDebito(item: Extrato): void{
+      this.extratoService.mostrarDetalheDebito(item).pipe(take(1)).subscribe((res: ExtratoEquivalente)=>{
+            this.tituloModal = "Débito";
+            this.modalForm.get("id")?.setValue(res.id);
+            this.modalForm.get("debitoId")?.setValue(res.debitoId);
+            this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+            this.modalForm.get("creditoId")?.setValue(res.creditoId);
+            this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+      });
+    }
+  
+    public maisInformacoesCredito(item: Extrato): void{
+      this.extratoService.mostrarDetalheCredito(item).pipe(take(1)).subscribe((res: ExtratoEquivalente)=>{
+            this.tituloModal = "Crédito";
+            this.modalForm.get("id")?.setValue(res.id);
+            this.modalForm.get("debitoId")?.setValue(res.debitoId);
+            this.modalForm.get("debito")?.setValue(res.debito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+            this.modalForm.get("creditoId")?.setValue(res.creditoId);
+            this.modalForm.get("credito")?.setValue(res.credito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+      });
+    }
+
   public truncarTexto(texto: string) {
     let adicionarReticencias = true;
     if (!texto) return '';
@@ -344,5 +383,39 @@ export class ConciliadoListComponent {
         this.totalDebitoConciliadoC = res[0];
         this.totalCreditoConciliadoC = res[1];
       });
+    }
+
+    public creditoExtrato(creditoExtrato: number): void {
+        this.creditoExtratoArray.push(creditoExtrato);
+        this.somaCreditoExtratoArray = this.creditoExtratoArray.reduce((acumulador, valorAtual)=> acumulador + valorAtual, 0);
+        this.verificaSaldoCredito();
+    }
+
+    public retirarCreditoExtrato(creditoExtrato: number): void {
+      let index = this.creditoExtratoArray.indexOf(creditoExtrato);
+      this.creditoExtratoArray.splice(index, 1);
+      this.somaCreditoExtratoArray = this.creditoExtratoArray.reduce((acumulador, valorAtual)=> acumulador + valorAtual, 0);
+    }
+
+    public creditoSit(creditoSit: number): void {
+        this.creditoSitArray.push(creditoSit);
+        this.somaCreditoSitArray = this.creditoSitArray.reduce((acumulador, valorAtual)=> acumulador + valorAtual, 0);
+        this.verificaSaldoCredito();
+    }
+
+    public retirarCreditoSit(creditoExtrato: number): void {
+      let index = this.creditoSitArray.indexOf(creditoExtrato);
+      this.creditoSitArray.splice(index, 1);
+      this.somaCreditoSitArray = this.creditoSitArray.reduce((acumulador, valorAtual)=> acumulador + valorAtual, 0);
+    }
+
+    public verificaSaldoCredito(){
+      if(this.somaCreditoExtratoArray > this.somaCreditoSitArray){
+        this.resultadoCredito = this.somaCreditoExtratoArray - this.somaCreditoSitArray; 
+      }
+       
+      if(this.somaCreditoSitArray > this.somaCreditoExtratoArray){
+        this.resultadoCredito = this.somaCreditoSitArray - this.somaCreditoExtratoArray; 
+      }
     }
 }
